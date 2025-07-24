@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log_output/internal/logger"
 	"log_output/internal/storage"
+	"log_output/internal/utils"
 	"net/http"
 	"os"
 	"strconv"
@@ -31,7 +32,6 @@ func NewServer() *Server {
 
 	// Initialize store mem
 	store := storage.NewMemoryStorage()
-	// store := logger.NewLogger()
 
 	interval := 5 * time.Second
 	// normally would get interval from env with godotenv...
@@ -66,6 +66,16 @@ func NewServer() *Server {
 	return newServer
 }
 
+// Basic health and ready handlers
+func (s *Server) HealthHandler(w http.ResponseWriter, r *http.Request) {
+	// simple health check
+	utils.WriteJson(w, http.StatusOK, utils.Envelope{"status": "ready"})
+}
+
+func (s *Server) ReadyHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
 // Override orig. httpServer.Shutdown() to clean up custom logger
 func (s *Server) Shutdown(ctx context.Context) error {
 	// Stop logger first
@@ -93,7 +103,7 @@ func (s *Server) startLogger() {
 		// Start logger --> will continue running until context cancelled
 		if err := s.logger.StartLogger(ctx); err != nil {
 			// Logg err if start logger gives err  but continue running server
-			fmt.Printf("Logger error: %v")
+			fmt.Printf("Logger error: %v", err)
 		}
 
 	}()
