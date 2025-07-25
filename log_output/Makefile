@@ -21,7 +21,6 @@ docker-run:
 		docker-compose up --build; \
 	fi
 
-# Shutdown DB container
 docker-down:
 	@if docker compose down 2>/dev/null; then \
 		: ; \
@@ -29,11 +28,6 @@ docker-down:
 		echo "Falling back to Docker Compose V1"; \
 		docker-compose down; \
 	fi
-
-# Test the application
-# test:
-# 	@echo "Testing..."
-# 	@go test ./... -v
 
 # Clean the binary
 clean:
