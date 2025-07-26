@@ -6,7 +6,9 @@ This repository contains all exercises for the DevOps Kubernetes Course.
 
 Each link points to the specific release and directory for that exercise.
 
+---
 ### Part 1
+ - [Exercise 1.1](https://github.com/YOUR_USERNAME/kubernetes-course-exercises/releases/tag/1.1) - Log Output Application
 <!-- - [Exercise 1.1](https://github.com/YOUR_USERNAME/kubernetes-course-exercises/releases/tag/1.1) - Log Output Application -->
 <!-- - [Exercise 1.5](https://github.com/YOUR_USERNAME/kubernetes-course-exercises/releases/tag/1.5) - [Description] -->
 
