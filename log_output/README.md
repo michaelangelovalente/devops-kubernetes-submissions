@@ -3,12 +3,14 @@
 ## Description
 
 **Docker Hub repository:** [log-output](https://hub.docker.com/layers/michaelangelovalente/log-output/v1.0/images/sha256-d6f49f4b33d256e739cf9e8a35320af7f6a87dee84d324de739eee89ae549d54)
-
 **Source Code:** [log output source code]()
 
-The `log_output` application is a Go-based HTTP server that generates timestamped log entries every 5 seconds. Each log entry contains a random UUID string that is stored in memory and displayed with a timestamp.
+`log_output` application is a Go-based HTTP server that generates timestamped log entries every 5 seconds. Each log entry contains a random UUID string that is stored in memory and displayed with a timestamp.
 
-This application was built using modern Go 1.24+ practices and serves as a foundation for backend REST applications in subsequent exercises. The codebase is "complex" based on exercise requirement, but was done so to study clean architecture patterns with the Go standard `net/http` library.
+This application was built using modern Go 1.24+ practices and serves as a foundation for backend REST applications in subsequent exercises.
+
+A note on the codebase complexity:
+  *log_output is "complex" or does more than the exercise's requirement, but was done so to study clean architecture patterns with the Go standard `net/http` library.*
 
 ## Commands
 
@@ -28,14 +30,17 @@ docker push <username>/log-output:v1.0
 
 #### Create k3d Cluster
 ```bash
-k3d cluster create log-output-cluster -a 2
+k3d cluster create first-deploy-cluster -a 2
 ```
+~~k3d cluster create log-output-cluster -a 2~~
 
 #### Configure kubectl Context
 ```bash
 kubectl config get-contexts
-kubectl config set-context log-output-cluster
+kubectl config use-context first-deploy-cluster
 ```
+~~kubectl config use-context log-output-cluster~~
+~~kubectl config set-context log-output-cluster~~
 
 #### Deploy Application
 ```bash
