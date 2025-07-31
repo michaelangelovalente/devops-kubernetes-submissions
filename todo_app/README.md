@@ -1,101 +1,82 @@
-# 1.2 Project todo_app
+# Todo App - Exercise 1.2
 
-## Description
+A Go-based HTTP server application for the DevOps Kubernetes Course.
 
-**Docker Hub repository:** [todo_app:ex1.02](https://hub.docker.com/layers/michaelangelovalente/todo_app/ex1.02/images/sha256-eefdc7041060a4df2aa37c456aee658ffaf7d461f83368d2c1407c6a66258709)
-**Source Code:** [todo_app source code]()
+## 🔗 Links
 
-`todo_app` application is a Go-based HTTP server.
-As per exercise requirement (1.2), it logs `Server started in port NNNN`, where NNNN is a environment set port number, if this value isn't set
-the application will use port 8080 by default.
+- **Docker Hub:** [michaelangelovalente/todo_app:ex1.02](https://hub.docker.com/layers/michaelangelovalente/todo_app/ex1.02/images/sha256-eefdc7041060a4df2aa37c456aee658ffaf7d461f83368d2c1407c6a66258709)
+- **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/todo_app)
 
-## Commands
+## 📋 Description
 
-### Docker Image Management
+The `todo_app` is a Go-based HTTP server that meets exercise 1.2 requirements by logging `Server started in port NNNN` on startup. The port number is configurable via environment variable, defaulting to **8080** if not specified.
 
-#### Build Docker Image
+## 🐳 Docker Commands
+
+### Build Image
 ```bash
 docker build -t <username>/todo_app:ex1.02 .
 ```
 
-``` bash
-# alternative:
+**Alternative using Docker Compose:**
+```bash
 docker compose up
-docker image tag <username>/todo_app:ex1.02
+docker image tag todo_app:latest <username>/todo_app:ex1.02
 ```
 
-#### Push to Docker Hub
+### Push to Docker Hub
 ```bash
 docker push <username>/todo_app:ex1.02
 ```
 
-### Kubernetes Deployment
+## ☸️ Kubernetes Deployment
 
-
-#### Verify / Configure kubectl Context
+### Configure kubectl Context
 ```bash
 kubectl config get-contexts
-# if context not first-deploy-cluster
-kubectl config use-context log-output-cluster
+kubectl config use-context todo-app-cluster  # if not already set
 ```
 
-#### Deploy Application
+### Deploy Application
 ```bash
-kubectl create deployment todo-app-ex-1-2 --image=michaelangelovalente/log-output:ex1.02
-
+kubectl create deployment todo-app-ex-1-2 --image=michaelangelovalente/todo_app:ex1.02
 ```
 
-#### Monitor Deployment
+### Monitor Deployment
 ```bash
 kubectl get deployments
 kubectl get replicasets
 kubectl get pods
-kubectl logs -f <deploymentname-replacesethash-generatedpodsuffix>
+kubectl logs -f <pod-name>
 ```
 
+**Pod Naming Convention:**
 ```
-pod name composition notes:
- todo-app-ex-1-2 (deployment name)
- [todo-app-ex-1-2]-85cbd45c46 (deployment name + ReplicaSet hash)
- [[todo-app-ex-1-2]-85cbd45c46]-74tw9  (dployment name + ReplicaSet hash + generated pod suffix)
+todo-app-ex-1-2                           # Deployment name
+todo-app-ex-1-2-85cbd45c46                # + ReplicaSet hash
+todo-app-ex-1-2-85cbd45c46-74tw9          # + Pod suffix
 ```
 
-## Local Development
+## 🛠️ Local Development
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-### Build and Run
+### Using Makefile Commands
 ```bash
-# Build the application
-make build
-
-# Run the application locally
-make run
-
-# Start with Docker Compose
-make docker-run
-
-# Stop Docker containers
-make docker-down
-
-# Live reload during development
-make watch
-
-# Clean build artifacts
-make clean
+make build       # Build the application
+make run         # Run locally
+make docker-run  # Start with Docker Compose
+make docker-down # Stop Docker containers
+make watch       # Live reload during development
+make clean       # Clean build artifacts
 ```
 
 ### Direct Go Commands
 ```bash
-# Run the server directly
-go run cmd/server/main.go
-
-# Build manually
-go build -o main cmd/server/main.go
-
-# Run tests (when available)
-go test ./... -v
+go run cmd/server/main.go              # Run server directly
+go build -o main cmd/server/main.go    # Build manually
+go test ./... -v                       # Run tests
 ```
 
-<!-- Future: Run build make command with tests -->
-<!-- make all -->
+---
+
+**Environment Variables:**
+- `PORT`: Server port (default: 8080)

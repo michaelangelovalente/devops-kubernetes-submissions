@@ -1,94 +1,86 @@
-# 1.1 Project log_output
+# Log Output - Exercise 1.1
 
-## Description
+A Go-based HTTP server with background logging for the DevOps Kubernetes Course.
 
-**Docker Hub repository:** [log-output](https://hub.docker.com/layers/michaelangelovalente/log-output/v1.0/images/sha256-d6f49f4b33d256e739cf9e8a35320af7f6a87dee84d324de739eee89ae549d54)
-**Source Code:** [log output source code]()
+## 🔗 Links
 
-`log_output` application is a Go-based HTTP server that generates timestamped log entries every 5 seconds. Each log entry contains a random UUID string that is stored in memory and displayed with a timestamp.
+- **Docker Hub:** [michaelangelovalente/log-output:v1.0](https://hub.docker.com/layers/michaelangelovalente/log-output/v1.0/images/sha256-d6f49f4b33d256e739cf9e8a35320af7f6a87dee84d324de739eee89ae549d54)
+- **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/log_output)
 
-This application was built using modern Go 1.24+ practices and serves as a foundation for backend REST applications in subsequent exercises.
+## 📋 Description
 
-A note on the codebase complexity:
-  *log_output is "complex" or does more than the exercise's requirement, but was done so to study clean architecture patterns with the Go standard `net/http` library.*
+The `log_output` application is a Go-based HTTP server that generates timestamped log entries every 5 seconds. Each entry contains a random UUID string stored in memory and displayed with timestamps.
 
-## Commands
+Built with modern **Go 1.24+** practices following clean architecture patterns, this application demonstrates:
+- Background goroutines with graceful shutdown
+- In-memory storage with interfaces
+- CORS-enabled HTTP server
+- Structured logging and UUID generation
 
-### Docker Image Management
+> **Note:** The codebase intentionally exceeds exercise requirements to showcase clean architecture patterns using Go's standard `net/http` library.
 
-#### Build Docker Image
+## 🐳 Docker Commands
+
+### Build Image
 ```bash
 docker build -t <username>/log-output:v1.0 .
 ```
 
-#### Push to Docker Hub
+### Push to Docker Hub
 ```bash
 docker push <username>/log-output:v1.0
 ```
 
-### Kubernetes Deployment
+## ☸️ Kubernetes Deployment
 
-#### Create k3d Cluster
+### Create k3d Cluster
 ```bash
 k3d cluster create first-deploy-cluster -a 2
 ```
-~~k3d cluster create log-output-cluster -a 2~~
 
-#### Configure kubectl Context
+### Configure kubectl Context
 ```bash
 kubectl config get-contexts
 kubectl config use-context first-deploy-cluster
 ```
-~~kubectl config use-context log-output-cluster~~
-~~kubectl config set-context log-output-cluster~~
 
-#### Deploy Application
+### Deploy Application
 ```bash
 kubectl create deployment log-output-ex-1-1 --image=michaelangelovalente/log-output:v1.0
 ```
 
-#### Monitor Deployment
+### Monitor Deployment
 ```bash
 kubectl get deployments
+kubectl get pods
 kubectl logs -f <pod-name>
 ```
 
-## Local Development
+## 🛠️ Local Development
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-### Build and Run
+### Using Makefile Commands
 ```bash
-# Build the application
-make build
-
-# Run the application locally
-make run
-
-# Start with Docker Compose
-make docker-run
-
-# Stop Docker containers
-make docker-down
-
-# Live reload during development
-make watch
-
-# Clean build artifacts
-make clean
+make build       # Build the application
+make run         # Run locally (default port: 3000)
+make docker-run  # Start with Docker Compose
+make docker-down # Stop Docker containers
+make watch       # Live reload during development (uses air)
+make clean       # Clean build artifacts
 ```
 
 ### Direct Go Commands
 ```bash
-# Run the server directly
-go run cmd/server/main.go
-
-# Build manually
-go build -o main cmd/server/main.go
-
-# Run tests (when available)
-go test ./... -v
+go run cmd/server/main.go              # Run server directly
+go build -o main cmd/server/main.go    # Build manually
+go test ./... -v                       # Run tests
 ```
 
-<!-- Future: Run build make command with tests -->
-<!-- make all -->
+---
+
+**Environment Variables:**
+- `PORT`: Server port (default: 3000)
+
+**Features:**
+- Background UUID logging every 5 seconds
+- CORS-enabled HTTP endpoints
+- Graceful shutdown with context cancellation
