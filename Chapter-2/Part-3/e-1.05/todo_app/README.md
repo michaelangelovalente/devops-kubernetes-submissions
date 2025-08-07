@@ -53,7 +53,6 @@ curl localhost:8090/
 ```
 
 ```html
-<!-- HTML output from the todo app will be rendered here -->
 <!doctype html>
 <html lang="en" class="h-screen">
 
@@ -109,4 +108,4 @@ go test ./... -v                       # Run tests
 ---
 
 **Environment Variables:**
-- `PORT`: Server port (default: 8080)
+- `APP_PORT`: Server port (default: 8080) / kubernetes manifest deployment.yaml ( port 3005)
