@@ -1,19 +1,23 @@
-# Todo App - Exercise 1.5
+# Todo App - Exercise 1.05
 
-A Go-based + HTMX application for the DevOps Kubernetes Course exercise 1.05
-
+A Todo application built with Go, HTMX, and TailwindCSS for the DevOps with Kubernetes Course.
 
 ## 🔗 Links
 
-- **Docker Hub:** [michaelangelovalente/todo_app:ex1.05]()
+- **Docker Hub:** [michaelangelovalente/todo_app:ex1.05](https://hub.docker.com/layers/michaelangelovalente/todo_app/ex1.05/images/sha256-29e7c9f66809b52e63c4a9aa31c10aa6982551a661c2bda4c948092073a0ab28)
 - **Source Code:** [GitHub Repository]()
 
 ## 📋 Description
 
-The `todo_app` is a Go-based HTTP server that meets exercise 1.5 requirements by
-starting a backend service with a base end points that redirects to a todo app's landing page
+- **Backend:** Go HTTP server with structured logging and graceful shutdown
+- **Frontend:** HTMX for dynamic interactions without JavaScript complexity
+- **Styling:** TailwindCSS
+- **Infrastructure:** Docker containerization and Kubernetes deployment
+
+The application serves a clean, interactive todo interface that meets all exercise 1.05 requirements.
 ## 🐳 Docker Commands
 
+### Build Image
 ```bash
 docker build -t <username>/todo_app:ex1.05 .
 ```
@@ -23,34 +27,46 @@ docker build -t <username>/todo_app:ex1.05 .
 docker push <username>/todo_app:ex1.05
 ```
 
+### Run Locally with Docker
+```bash
+docker run -p 8080:8080 <username>/todo_app:ex1.05
+```
+
 ## ☸️ Kubernetes Deployment
 
 ### Configure kubectl Context
 ```bash
 kubectl config get-contexts
-# using k3d-k3s-default
+kubectl config use-context k3d-k3s-default
 ```
 
 ### Deploy Application
 ```bash
-# creating deployment
 kubectl apply -f manifests/deployment.yaml
 ```
 
-### Check Environment variables APP_PORT
+### Verify Deployment
 ```bash
-kubectl exec todo-app-dep-5884c7f66d-ffwr5 -- printenv
+# Check deployment status
+kubectl get deployments
+
+# Check pods
+kubectl get pods
+
+# Check environment variables
+kubectl exec <pod-name> -- printenv | grep APP_PORT
 ```
 
-### Port forward and verify
+### Access Application
 ```bash
+# Port forward to access the application
 kubectl port-forward service/todo-app-svc 8090:8080
+
+# Test the application
+curl localhost:8090/
 ```
 
 #### Expected Output
-```bash
-curl localhost:8090/
-```
 
 ```html
 <!doctype html>
@@ -91,10 +107,10 @@ curl localhost:8090/
 ### Using Makefile Commands
 ```bash
 make build       # Build the application
-make run         # Run locally
+make run         # Run locally on port 8080
 make docker-run  # Start with Docker Compose
 make docker-down # Stop Docker containers
-make watch       # Live reload during development
+make watch       # Live reload during development (uses Air)
 make clean       # Clean build artifacts
 ```
 
@@ -105,7 +121,16 @@ go build -o main cmd/server/main.go    # Build manually
 go test ./... -v                       # Run tests
 ```
 
+### Development Features
+- **Live Reload:** Use `make watch` for automatic rebuilding during development
+- **HTMX Integration:** Dynamic todo interactions without page refreshes
+- **TailwindCSS:** Responsive design with modern styling
+- **Graceful Shutdown:** Clean server termination handling
+
 ---
 
+## ⚙️ Configuration
+
 **Environment Variables:**
-- `APP_PORT`: Server port (default: 8080) / kubernetes manifest deployment.yaml ( port 3005)
+- `APP_PORT`: Server port (default: 8080, Kubernetes deployment uses 3005)
+
