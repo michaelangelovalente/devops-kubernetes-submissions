@@ -18,7 +18,7 @@ type Server struct {
 }
 
 func NewServer() *Server {
-	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	port, _ := strconv.Atoi(os.Getenv("APP_PORT"))
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	if port == 0 {
 		port = 8080

@@ -1,16 +1,24 @@
 # Simple Makefile for a Go project
 
 # Build the application
-all: build test
+all: generate build test
 
-build:
+generate:
+	@echo "Generating templates..."
+	@if command -v templ > /dev/null; then \
+		templ generate; \
+	else \
+		echo "Installing templ..."; \
+		go install github.com/a-h/templ/cmd/templ@latest; \
+		templ generate; \
+	fi
+
+build: generate
 	@echo "Building..."
-	
-	
 	@go build -o main cmd/api/main.go
 
 # Run the application
-run:
+run: generate
 	@go run cmd/api/main.go
 # Create DB container
 docker-run:
@@ -41,7 +49,7 @@ clean:
 	@rm -f main
 
 # Live Reload
-watch:
+watch: generate
 	@if command -v air > /dev/null; then \
             air; \
             echo "Watching...";\
@@ -57,4 +65,4 @@ watch:
             fi; \
         fi
 
-.PHONY: all build run test clean watch
+.PHONY: all generate build run test clean watch

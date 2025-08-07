@@ -1,14 +1,15 @@
 services:
   app:
     image: todo_app
-    container_name: todo_app_c
+    container_name: todo_app_ctr
     build:
       context: .
       dockerfile: Dockerfile
       target: dev
     restart: unless-stopped
     ports:
-      - ${PORT:-8080}:${PORT:-8080}
+      - ${APP_PORT:-3005}:${APP_PORT:-3005}
+    # docker compose injects local var APP_ENV
     environment:
       APP_ENV: ${APP_ENV:-local}
-      PORT: ${PORT:-8080}
+      APP_PORT: ${APP_PORT:-3005}
