@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-app-dep
+  labels:
+    app: todo-app
+    version: "1.05"
+    component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-app
+      version: "1.05"
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: todo-app
+        version: "1.05"
+        component: backend
+    spec:
+      containers:
+        - name: todo-app-container
+          image: michaelangelovalente/todo_app:ex1.05
+          # ENV variables config
+          env:
+            # Application level env var (consumed by actual app)
+            - name: APP_PORT
+              value: "3005"
+          # Kubernetes level port declaration
+          ports:
+            - name: http-server
+              containerPort: 3005
+              protocol: TCP
