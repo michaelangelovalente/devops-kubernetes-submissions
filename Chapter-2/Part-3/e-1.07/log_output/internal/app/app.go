@@ -1,13 +1,17 @@
 package app
 
 import (
+	"context"
+	"fmt"
 	"log_output/internal/logger"
 	"log_output/internal/store"
+	"sync"
 	"time"
 )
 
 type Application struct {
 	Logger *logger.Logger
+	wg     sync.WaitGroup
 	// .. Handlers
 }
 
@@ -15,7 +19,7 @@ func NewApplication() (*Application, error) {
 	logMemoryStore := store.NewMemoryStorage()
 
 	loggerConfig := logger.LoggerConfig{
-		Interval:   5 * time.Second, // replace with env var
+		Interval:   1 * time.Second, // Log every second
 		TimeFormat: time.RFC3339,
 	}
 
@@ -28,4 +32,29 @@ func NewApplication() (*Application, error) {
 		Logger: logger,
 	}
 	return app, nil
+}
+
+func (a *Application) Start(ctx context.Context) error {
+	fmt.Println("Starting applicataion services....")
+
+	a.wg.Add(1)
+
+	go func() {
+		defer a.wg.Done()
+
+		if err := a.Logger.StartLogger(ctx); err != nil {
+			fmt.Printf("Logger start error: %v\n", err)
+		}
+	}()
+
+	return nil
+}
+
+func (a *Application) Stop() error {
+	fmt.Println("Stopping application services...")
+
+	a.wg.Wait()
+
+	fmt.Println("Application stopped succesfully")
+	return nil
 }

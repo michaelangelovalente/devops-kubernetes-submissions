@@ -13,7 +13,7 @@ import (
 	"log_output/internal/server"
 )
 
-func gracefulShutdown(apiServer *http.Server, done chan bool) {
+func gracefulShutdown(apiServer *http.Server, app *app.Application, appCancel context.CancelFunc, done chan bool) {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
@@ -22,14 +22,21 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 	log.Println("shutting down gracefully, press Ctrl+C again to force")
 	stop() // Allow Ctrl+C to force shutdown
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	// Shutdown sequence: 1) Stop application services, 2) Stop HTTP server
+	log.Println("stopping application services...")
+	appCancel() // Cancel application context to stop logger
+	if err := app.Stop(); err != nil {
+		log.Printf("Application shutdown error: %v", err)
+	}
+
+	log.Println("stopping HTTP server...")
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	if err := apiServer.Shutdown(ctx); err != nil {
+	if err := apiServer.Shutdown(shutdownCtx); err != nil {
 		log.Printf("Server forced to shutdown with error: %v", err)
 	}
 
 	log.Println("Server exiting")
-
 	done <- true
 }
 
@@ -38,12 +45,23 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	server := server.NewServer(app)
 
+	// Create application context for logger
+	appCtx, appCancel := context.WithCancel(context.Background())
+	defer appCancel()
+
+	// Start application services (logger)
+	if err := app.Start(appCtx); err != nil {
+		panic(fmt.Sprintf("failed to start application: %v", err))
+	}
+
+	server := server.NewServer(app)
 	done := make(chan bool, 1)
 
-	go gracefulShutdown(server, done)
+	// Start graceful shutdown handler
+	go gracefulShutdown(server, app, appCancel, done)
 
+	log.Println("Starting HTTP server...")
 	err = server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		panic(fmt.Sprintf("http server error: %s", err))
