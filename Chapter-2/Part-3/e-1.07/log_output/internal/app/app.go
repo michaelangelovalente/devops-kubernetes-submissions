@@ -3,11 +3,12 @@ package app
 import (
 	"context"
 	"fmt"
+	"sync"
+	"time"
+
 	"log_output/internal/api"
 	"log_output/internal/logger"
 	"log_output/internal/store"
-	"sync"
-	"time"
 )
 
 type Application struct {
@@ -21,7 +22,7 @@ func NewApplication() (*Application, error) {
 	logMemoryStore := store.NewMemoryStorage()
 
 	loggerConfig := logger.LoggerConfig{
-		Interval:   1 * time.Second, // Log every second
+		Interval:   5 * time.Second,
 		TimeFormat: time.RFC3339,
 	}
 

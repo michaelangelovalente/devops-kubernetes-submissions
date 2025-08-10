@@ -33,7 +33,7 @@ func (m *MemoryStorage) Store(timestamp time.Time, value string) error {
 
 // GetAll returns a copy of all log entries (copy used to avoid external modification)
 func (m *MemoryStorage) GetAll() []logger.LogEntry {
-	m.mu.Lock()
+	m.mu.RLock()
 	defer m.mu.RUnlock()
 
 	res := make([]logger.LogEntry, len(m.entries))
