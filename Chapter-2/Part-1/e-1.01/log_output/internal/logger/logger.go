@@ -27,7 +27,7 @@ type LogEntry struct {
 }
 
 // LoggerConfig holds logger configuration
-type LoggerConfig struct {
+type Config struct {
 	Interval      time.Duration
 	GenerateValue ValueGenerator
 	TimeFormat    string
@@ -35,13 +35,13 @@ type LoggerConfig struct {
 
 // Logger core struct, contains logging logic
 type Logger struct {
-	loggerConfig LoggerConfig
+	loggerConfig Config
 	logStorage   LogStorage
 	currentValue string
 	rwMutex      sync.RWMutex // Protects "currentValue" (thread safety)
 }
 
-func NewLogger(loggerConfig LoggerConfig, logStorage LogStorage) *Logger {
+func NewLogger(loggerConfig Config, logStorage LogStorage) *Logger {
 	return &Logger{
 		loggerConfig: loggerConfig,
 		logStorage:   logStorage,

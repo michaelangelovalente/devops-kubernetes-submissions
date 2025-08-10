@@ -36,7 +36,7 @@ func NewServer() *Server {
 	interval := 5 * time.Second
 	// normally would get interval from env with godotenv...
 
-	config := logger.LoggerConfig{
+	config := logger.Config{
 		Interval:      interval,
 		GenerateValue: logger.GenerateUUID, // parameterized func
 		TimeFormat:    time.RFC3339,        // ISO 8601 format with timezone
