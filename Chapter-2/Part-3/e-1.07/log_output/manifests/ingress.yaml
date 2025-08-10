@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: log-output-ingress
+  # annotations:
+  # # Traefik default in k3s. This would be the part were
+  # # custom Ingress controller can be configured
+  # kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: log-output-svc # ingress looks for this service
+              # version: "1.07" --> service handles pointing to the correct version
+              port:
+                number: 2345

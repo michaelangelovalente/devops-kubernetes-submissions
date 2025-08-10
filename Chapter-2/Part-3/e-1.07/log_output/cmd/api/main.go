@@ -51,18 +51,19 @@ func main() {
 	defer appCancel()
 
 	// Start application services (logger)
-	if err := app.Start(appCtx); err != nil {
+	if err = app.Start(appCtx); err != nil {
 		panic(fmt.Sprintf("failed to start application: %v", err))
 	}
 
 	server := server.NewServer(app)
+	log.Printf("Server 'log_output' version 1.07 started on port: %d\n", server.Port)
 	done := make(chan bool, 1)
 
 	// Start graceful shutdown handler
-	go gracefulShutdown(server, app, appCancel, done)
+	go gracefulShutdown(server.HttpServer, app, appCancel, done)
 
 	log.Println("Starting HTTP server...")
-	err = server.ListenAndServe()
+	err = server.HttpServer.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		panic(fmt.Sprintf("http server error: %s", err))
 	}

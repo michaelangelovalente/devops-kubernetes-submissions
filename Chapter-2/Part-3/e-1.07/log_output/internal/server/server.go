@@ -13,27 +13,49 @@ import (
 )
 
 type Server struct {
-	port int
-	app  *app.Application
+	Port       int
+	app        *app.Application
+	HttpServer *http.Server
 }
 
-func NewServer(application *app.Application) *http.Server {
+func NewServer(application *app.Application) *Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if port == 0 {
 		port = 8080
 	}
-	NewServer := &Server{
-		port: port,
-	}
 
 	// Declare Server config
 	server := &http.Server{
-		Addr:         fmt.Sprintf(":%d", NewServer.port),
+		Addr:         fmt.Sprintf(":%d", port),
 		Handler:      routes.RegisterRoutes(application),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
 
-	return server
+	return &Server{
+		Port:       port,
+		HttpServer: server,
+	}
 }
+
+// func NewServer(application *app.Application) *http.Server {
+// 	port, _ := strconv.Atoi(os.Getenv("PORT"))
+// 	if port == 0 {
+// 		port = 8080
+// 	}
+// 	NewServer := &Server{
+// 		Port: port,
+// 	}
+//
+// 	// Declare Server config
+// 	server := &http.Server{
+// 		Addr:         fmt.Sprintf(":%d", NewServer.Port),
+// 		Handler:      routes.RegisterRoutes(application),
+// 		IdleTimeout:  time.Minute,
+// 		ReadTimeout:  10 * time.Second,
+// 		WriteTimeout: 30 * time.Second,
+// 	}
+//
+// 	return server
+// }
