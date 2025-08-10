@@ -3,6 +3,7 @@ package routes
 import (
 	"encoding/json"
 	"log"
+	"log_output/internal/app"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -10,7 +11,7 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func RegisterRoutes() http.Handler {
+func RegisterRoutes(app *app.Application) http.Handler {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
@@ -23,6 +24,7 @@ func RegisterRoutes() http.Handler {
 	}))
 
 	r.Get("/", HelloWorldHandler)
+	r.Get("/logs", app.LoggerHandler.GetAllLogs)
 
 	return r
 }

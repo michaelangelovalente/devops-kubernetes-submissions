@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"log_output/internal/api"
 	"log_output/internal/logger"
 	"log_output/internal/store"
 	"sync"
@@ -10,8 +11,9 @@ import (
 )
 
 type Application struct {
-	Logger *logger.Logger
-	wg     sync.WaitGroup
+	Logger        *logger.Logger
+	wg            sync.WaitGroup
+	LoggerHandler *api.LoggerEntryHandler
 	// .. Handlers
 }
 
@@ -23,13 +25,15 @@ func NewApplication() (*Application, error) {
 		TimeFormat: time.RFC3339,
 	}
 
-	logger := logger.NewLogger(loggerConfig, logMemoryStore)
+	log := logger.NewLogger(loggerConfig, logMemoryStore)
 
 	//---  Handler layer ----
+	loggerHandler := api.NewLoggerEntryHandler(logMemoryStore)
 
 	//-----------------------
 	app := &Application{
-		Logger: logger,
+		Logger:        log,
+		LoggerHandler: loggerHandler,
 	}
 	return app, nil
 }

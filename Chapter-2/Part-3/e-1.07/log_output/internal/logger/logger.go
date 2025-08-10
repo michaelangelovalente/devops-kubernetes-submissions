@@ -22,8 +22,8 @@ type LogStorage interface {
 
 // LogEntry represents single log entry
 type LogEntry struct {
-	Timestamp time.Time
-	Value     string
+	Timestamp time.Time `json:"timestamp"`
+	Value     string    `json:"value"`
 }
 
 // LoggerConfig holds logger configuration
