@@ -74,10 +74,6 @@ func (s *Server) HealthHandler(w http.ResponseWriter, r *http.Request) {
 	utils.WriteJson(w, http.StatusOK, utils.Envelope{"status": "ready"})
 }
 
-func (s *Server) ReadyHandler(w http.ResponseWriter, r *http.Request) {
-
-}
-
 // Override orig. httpServer.Shutdown() to clean up custom logger
 func (s *Server) Shutdown(ctx context.Context) error {
 	// Stop logger first
