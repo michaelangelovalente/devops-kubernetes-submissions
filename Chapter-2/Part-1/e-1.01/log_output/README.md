@@ -4,7 +4,7 @@ A Go-based HTTP server with background logging for the DevOps Kubernetes Course.
 
 ## 🔗 Links
 
-- **Docker Hub:** [michaelangelovalente/log-output:v1.0](https://hub.docker.com/layers/michaelangelovalente/log-output/v1.0/images/sha256-d6f49f4b33d256e739cf9e8a35320af7f6a87dee84d324de739eee89ae549d54)
+- **Docker Hub:** [michaelangelovalente/log-output:ex1.01]( https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/1.1/log_output)
 - **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/log_output)
 
 ## 📋 Description
