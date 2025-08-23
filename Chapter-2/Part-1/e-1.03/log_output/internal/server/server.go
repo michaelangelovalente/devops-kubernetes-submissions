@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"log"
 	"log_output/internal/logger"
 	"log_output/internal/storage"
 	"log_output/internal/utils"
@@ -28,6 +29,7 @@ func NewServer() *Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if port == 0 {
 		port = 3000
+		log.Printf("Environment variable PORT not detected, starting application on default port %d\n", port)
 	}
 
 	// Initialize store mem
