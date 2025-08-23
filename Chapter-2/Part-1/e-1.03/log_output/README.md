@@ -4,8 +4,8 @@ A Go-based HTTP server with background logging for the DevOps Kubernetes Course.
 
 ## 🔗 Links
 
-- **Docker Hub:** [michaelangelovalente/log-output:ex1.03](https://hub.docker.com/r/michaelangelovalente/log-output)
-- **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions)
+- **Docker Hub:** [michaelangelovalente/log-output:ex1.03](https://hub.docker.com/layers/michaelangelovalente/log_output-app/ex1.03/images/sha256-06245083d1e3c81405f029e24e29a4cc80cdfe03ecb023f1aaefce76d6832ba8)
+- **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/Chapter-2/Part-1/e-1.03/log_output)
 
 ## 📋 Description
 
@@ -64,7 +64,5 @@ kubectl logs -f <pod-name>
 
 **Features:**
 - Background UUID logging every 5 seconds with timestamps
-- CORS-enabled HTTP endpoints (GET /)
-- Graceful shutdown with context cancellation and sync.WaitGroup
 - Declarative Kubernetes deployment through manifests/
 
