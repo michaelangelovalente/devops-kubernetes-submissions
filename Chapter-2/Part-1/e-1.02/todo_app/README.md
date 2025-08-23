@@ -4,8 +4,8 @@ A Go-based HTTP server application for the DevOps Kubernetes Course.
 
 ## 🔗 Links
 
-- **Docker Hub:** [michaelangelovalente/todo_app:ex1.02](https://hub.docker.com/layers/michaelangelovalente/todo_app/ex1.02/images/sha256-eefdc7041060a4df2aa37c456aee658ffaf7d461f83368d2c1407c6a66258709)
-- **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/todo_app)
+- **Docker Hub:** [michaelangelovalente/todo_app:ex1.02](https://hub.docker.com/layers/michaelangelovalente/todo_app/ex1.02/images/sha256-a9e0a9948e8ec63389aecf5ecbdcdc2ceee05f86e52115665d7f858b550e50d6)
+- **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/Chapter-2/Part-1/e-1.02/todo_app)
 
 ## 📋 Description
 
