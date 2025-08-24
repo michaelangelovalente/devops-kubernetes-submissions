@@ -1,10 +1,10 @@
-# Todo App - Exercise 1.05
+# Todo App - Exercise 1.06
 
 A Todo application built with Go, HTMX, and TailwindCSS for the DevOps with Kubernetes Course.
 
 ## 🔗 Links
 
-- **Docker Hub:** [michaelangelovalente/todo_app:ex1.05](https://hub.docker.com/layers/michaelangelovalente/todo_app/ex1.05/images/sha256-29e7c9f66809b52e63c4a9aa31c10aa6982551a661c2bda4c948092073a0ab28)
+- **Docker Hub:** [michaelangelovalente/todo_app:ex1.06](https://hub.docker.com/layers/michaelangelovalente/todo_app/ex1.06/images/sha256-29e7c9f66809b52e63c4a9aa31c10aa6982551a661c2bda4c948092073a0ab28)
 - **Source Code:** [GitHub Repository]()
 
 ## 📋 Description
@@ -12,27 +12,32 @@ A Todo application built with Go, HTMX, and TailwindCSS for the DevOps with Kube
 - **Backend:** Go HTTP server with structured logging and graceful shutdown
 - **Frontend:** HTMX for dynamic interactions without JavaScript complexity
 - **Styling:** TailwindCSS
-- **Infrastructure:** Docker containerization and Kubernetes deployment
+- **Infrastructure:** Docker containerization and Kubernetes deployment with NodePort Service
 
-The application serves a clean, interactive todo interface that meets all exercise 1.05 requirements.
+This application demonstrates how to use a NodePort Service to enable external access to pods running in a Kubernetes cluster, fulfilling exercise 1.06 requirements.
 ## 🐳 Docker Commands
 
 ### Build Image
 ```bash
-docker build -t <username>/todo_app:ex1.05 .
+docker build -t <username>/todo_app:ex1.06 .
 ```
 
 ### Push to Docker Hub
 ```bash
-docker push <username>/todo_app:ex1.05
+docker push <username>/todo_app:ex1.06
 ```
 
 ### Run Locally with Docker
 ```bash
-docker run -p 8080:8080 <username>/todo_app:ex1.05
+docker run -p 8080:8080 <username>/todo_app:ex1.06
 ```
 
 ## ☸️ Kubernetes Deployment
+
+### Create k3d Cluster
+```bash
+k3d cluster create --port 8089:30080@agent:0 -p 8081:2345@loadbalancer --agents 3
+```
 
 ### Configure kubectl Context
 ```bash
@@ -42,7 +47,8 @@ kubectl config use-context k3d-k3s-default
 
 ### Deploy Application
 ```bash
-kubectl apply -f manifests/deployment.yaml
+# Apply both deployment and service manifests
+kubectl apply -f manifests/
 ```
 
 ### Verify Deployment
@@ -53,13 +59,34 @@ kubectl get deployments
 # Check pods
 kubectl get pods
 
+# Check services (including NodePort)
+kubectl get services
+
 # Check environment variables
 kubectl exec <pod-name> -- printenv | grep APP_PORT
 ```
 
 ### Access Application
+
+**Method 1: NodePort Service (Primary for Exercise 1.06)**
 ```bash
-# Port forward to access the application
+# Access via NodePort (assuming k3d cluster with port mapping)
+# First, check the NodePort assigned:
+kubectl get service todo-app-svc
+
+# If using k3d with port mapping 8089:30080@agent:0
+# and service uses NodePort 30080:
+curl localhost:8089/
+
+# Or access directly via cluster node IP:
+# Get node IP:
+kubectl get nodes -o wide
+# Access: http://<NODE_IP>:30080/
+```
+
+**Method 2: Port Forward (Alternative)**
+```bash
+# Port forward to access the application (development/debugging)
 kubectl port-forward service/todo-app-svc 8090:8080
 
 # Test the application
@@ -133,4 +160,10 @@ go test ./... -v                       # Run tests
 
 **Environment Variables:**
 - `APP_PORT`: Server port (default: 8080, Kubernetes deployment uses 3005)
+
+**Service Configuration:**
+- **Service Type:** NodePort (enables external access without LoadBalancer)
+- **Target Port:** 8080 (application port)
+- **Service Port:** 8080 (cluster-internal port)
+- **NodePort:** 30080 (external access port on cluster nodes)
 

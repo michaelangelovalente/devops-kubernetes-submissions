@@ -4,25 +4,25 @@ metadata:
   name: todo-app-dep
   labels:
     app: todo-app
-    version: "1.05"
+    version: "1.06"
     component: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: todo-app
-      version: "1.05"
+      version: "1.06"
       component: backend
   template:
     metadata:
       labels:
         app: todo-app
-        version: "1.05"
+        version: "1.06"
         component: backend
     spec:
       containers:
         - name: todo-app-container
-          image: michaelangelovalente/todo_app:ex1.05
+          image: michaelangelovalente/todo_app:ex1.06
           # ENV variables config
           env:
             # Application level env var (consumed by actual app)
