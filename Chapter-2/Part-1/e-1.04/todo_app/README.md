@@ -1,45 +1,41 @@
-# Todo App - Exercise 1.2
+# Todo App - Exercise 1.4
 
 A Go-based HTTP server application for the DevOps Kubernetes Course.
 
 ## 🔗 Links
 
-- **Docker Hub:** [michaelangelovalente/todo_app:ex1.02](https://hub.docker.com/layers/michaelangelovalente/todo_app/ex1.02/images/sha256-eefdc7041060a4df2aa37c456aee658ffaf7d461f83368d2c1407c6a66258709)
-- **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/todo_app)
+- **Docker Hub:** [michaelangelovalente/todo_app:ex1.04](https://hub.docker.com/layers/michaelangelovalente/todo_app/ex1.04/images/sha256-e4bc8296f2beab45586673010335e9e2f1773001bfe5bfa42cb6ed8c379f4861)
+- **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/Chapter-2/Part-1/e-1.04/todo_app)
 
 ## 📋 Description
 
-The `todo_app` is a Go-based HTTP server that meets exercise 1.2 requirements by logging `Server started in port NNNN` on startup. The port number is configurable via environment variable, defaulting to **8080** if not specified.
+The `todo_app` is a Go-based HTTP server that meets exercise 1.4 requirements by logging `Server started in port NNNN` on startup.
+The port number is configurable via environment variable, defaulting to **8080** if not specified.
+This version of `todo_app` is identical to the version 1.02, the only difference is that it allows Declarative Deployment through `manifests/deployment.yaml` (exercise 1.04 requirement)
 
 ## 🐳 Docker Commands
 
 ### Build Image
 ```bash
-docker build -t <username>/todo_app:ex1.02 .
+docker build -t <username>/todo_app:ex1.04 .
 ```
 
 **Alternative using Docker Compose:**
 ```bash
 docker compose up
-docker image tag todo_app:latest <username>/todo_app:ex1.02
+docker image tag todo_app:latest <username>/todo_app:ex1.04
 ```
 
 ### Push to Docker Hub
 ```bash
-docker push <username>/todo_app:ex1.02
+docker push <username>/todo_app:ex1.04
 ```
 
 ## ☸️ Kubernetes Deployment
 
-### Configure kubectl Context
-```bash
-kubectl config get-contexts
-kubectl config use-context todo-app-cluster  # if not already set
-```
-
 ### Deploy Application
 ```bash
-kubectl create deployment todo-app-ex-1-2 --image=michaelangelovalente/todo_app:ex1.02
+kubectl apply -f manifests/
 ```
 
 ### Monitor Deployment
@@ -48,32 +44,6 @@ kubectl get deployments
 kubectl get replicasets
 kubectl get pods
 kubectl logs -f <pod-name>
-```
-
-**Pod Naming Convention:**
-```
-todo-app-ex-1-2                           # Deployment name
-todo-app-ex-1-2-85cbd45c46                # + ReplicaSet hash
-todo-app-ex-1-2-85cbd45c46-74tw9          # + Pod suffix
-```
-
-## 🛠️ Local Development
-
-### Using Makefile Commands
-```bash
-make build       # Build the application
-make run         # Run locally
-make docker-run  # Start with Docker Compose
-make docker-down # Stop Docker containers
-make watch       # Live reload during development
-make clean       # Clean build artifacts
-```
-
-### Direct Go Commands
-```bash
-go run cmd/server/main.go              # Run server directly
-go build -o main cmd/server/main.go    # Build manually
-go test ./... -v                       # Run tests
 ```
 
 ---
