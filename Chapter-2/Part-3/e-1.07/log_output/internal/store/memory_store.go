@@ -1,20 +1,30 @@
 package store
 
 import (
-	"log_output/internal/logger"
 	"sync"
 	"time"
 )
 
+type LogStorage interface {
+	Store(timestamp time.Time, value string) error
+	GetAll() []LogEntry
+	GetLatest(n int) []LogEntry
+}
+
+type LogEntry struct {
+	Timestamp time.Time `json:"timestamp"`
+	Value     string    `json:"value"`
+}
+
 // MemoryStore implements in-memory storage --> used for log entries
 type MemoryStorage struct {
-	entries []logger.LogEntry // TODO: replace with generic entry?
+	entries []LogEntry // TODO: replace with generic entry?
 	mu      sync.RWMutex
 }
 
 func NewMemoryStorage() *MemoryStorage {
 	return &MemoryStorage{
-		entries: make([]logger.LogEntry, 0),
+		entries: make([]LogEntry, 0),
 	}
 }
 
@@ -23,7 +33,7 @@ func (m *MemoryStorage) Store(timestamp time.Time, value string) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
-	m.entries = append(m.entries, logger.LogEntry{
+	m.entries = append(m.entries, LogEntry{
 		Timestamp: timestamp,
 		Value:     value,
 	})
@@ -32,17 +42,17 @@ func (m *MemoryStorage) Store(timestamp time.Time, value string) error {
 }
 
 // GetAll returns a copy of all log entries (copy used to avoid external modification)
-func (m *MemoryStorage) GetAll() []logger.LogEntry {
+func (m *MemoryStorage) GetAll() []LogEntry {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 
-	res := make([]logger.LogEntry, len(m.entries))
+	res := make([]LogEntry, len(m.entries))
 	copy(res, m.entries)
 
 	return res
 }
 
-func (m *MemoryStorage) GetLatest(n int) []logger.LogEntry {
+func (m *MemoryStorage) GetLatest(n int) []LogEntry {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 
@@ -51,7 +61,7 @@ func (m *MemoryStorage) GetLatest(n int) []logger.LogEntry {
 	}
 
 	start := len(m.entries) - n
-	result := make([]logger.LogEntry, n)
+	result := make([]LogEntry, n)
 	copy(result, m.entries[start:])
 
 	return result

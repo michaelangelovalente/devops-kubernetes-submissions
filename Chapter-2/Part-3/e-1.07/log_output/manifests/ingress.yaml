@@ -6,15 +6,16 @@ metadata:
   # # Traefik default in k3s. This would be the part were
   # # custom Ingress controller can be configured
   # kubernetes.io/ingress.class: "traefik"
+  # Note: traffic listens by default on port 80
 spec:
   rules:
     - http:
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: log-output-svc # ingress looks for this service
-              # version: "1.07" --> service handles pointing to the correct version
-              port:
-                number: 2345
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: log-output-svc # ingress looks for this service
+                # version: "1.07" --> service handles pointing to the correct version
+                port:
+                  number: 2345

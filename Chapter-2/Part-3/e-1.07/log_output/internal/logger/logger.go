@@ -3,6 +3,7 @@ package logger
 import (
 	"context"
 	"fmt"
+	"log_output/internal/store"
 	"sync"
 	"time"
 
@@ -13,19 +14,6 @@ import (
 // it is used to generate values (used to inject different value generation strategies --- behavioral parametr)
 type ValueGenerator func() string
 
-// TODO: move to store
-// LogStorage defines interface for storing log entries
-type LogStorage interface {
-	Store(timestamp time.Time, value string) error
-	GetAll() []LogEntry
-}
-
-// LogEntry represents single log entry
-type LogEntry struct {
-	Timestamp time.Time `json:"timestamp"`
-	Value     string    `json:"value"`
-}
-
 // LoggerConfig holds logger configuration
 type LoggerConfig struct {
 	Interval   time.Duration
@@ -35,12 +23,12 @@ type LoggerConfig struct {
 // Logger core struct, contains logging logic
 type Logger struct {
 	loggerConfig LoggerConfig
-	logStorage   LogStorage
+	logStorage   store.LogStorage
 	currentValue string
 	rwMutex      sync.RWMutex // Protects "currentValue" (thread safety)
 }
 
-func NewLogger(loggerConfig LoggerConfig, logStorage LogStorage) *Logger {
+func NewLogger(loggerConfig LoggerConfig, logStorage store.LogStorage) *Logger {
 	return &Logger{
 		loggerConfig: loggerConfig,
 		logStorage:   logStorage,

@@ -1,10 +1,9 @@
 package routes
 
 import (
-	"encoding/json"
-	"log"
-	"log_output/internal/app"
 	"net/http"
+
+	"log_output/internal/app"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -23,20 +22,27 @@ func RegisterRoutes(app *app.Application) http.Handler {
 		MaxAge:           300,
 	}))
 
-	r.Get("/", HelloWorldHandler)
+	// r.Get("/", HelloWorldHandler)
 	r.Get("/logs", app.LoggerHandler.GetAllLogs)
+	// r.Get("/status", app.LoggerHandler.GetAllLogs)
 
 	return r
 }
 
-func HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
-	resp := make(map[string]string)
-	resp["message"] = "Hello World"
+// Basic health and ready handlers
+// func (s *Server) HealthHandler(w http.ResponseWriter, r *http.Request) {
+// 	// simple health check
+// 	utils.WriteJson(w, http.StatusOK, utils.Envelope{"status": "ready"})
+// }
 
-	jsonResp, err := json.Marshal(resp)
-	if err != nil {
-		log.Fatalf("error handling JSON marshal. Err: %v", err)
-	}
-
-	_, _ = w.Write(jsonResp)
-}
+// func HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
+// 	resp := make(map[string]string)
+// 	resp["message"] = "Hello World"
+//
+// 	jsonResp, err := json.Marshal(resp)
+// 	if err != nil {
+// 		log.Fatalf("error handling JSON marshal. Err: %v", err)
+// 	}
+//
+// 	_, _ = w.Write(jsonResp)
+// }

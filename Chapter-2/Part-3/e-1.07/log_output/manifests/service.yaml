@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: log-output-svc
 spec:
-  type: ClusterIP # Service Type: give Service obj internal IP accessible within cluster
+  type: ClusterIP # Service Type: gives Service obj internal IP accessible within cluster
   selector:
     app: log-output
     version: "1.07"
