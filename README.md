@@ -16,5 +16,6 @@ Each link points to the specific release and directory for that exercise.
 
 ### Part 3 - Introduction to Networking
 - [Exercise 1.5](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/1.5/Chapter-2/Part-3/e-1.05/todo_app) - Todo Application Home Page
+- [Exercise 1.6](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/1.6/Chapter-2/Part-3/e-1.06/todo_app) - Todo Application Home Page (NodePort)
 <!-- - [Exercise 2.1](https://github.com/YOUR_USERNAME/kubernetes-course-exercises/releases/tag/2.1) - [Description] -->
 
