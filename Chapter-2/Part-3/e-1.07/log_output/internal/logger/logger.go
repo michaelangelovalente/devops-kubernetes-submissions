@@ -3,7 +3,9 @@ package logger
 import (
 	"context"
 	"fmt"
+	"log"
 	"log_output/internal/store"
+	"os"
 	"sync"
 	"time"
 
@@ -26,12 +28,14 @@ type Logger struct {
 	logStorage   store.LogStorage
 	currentValue string
 	rwMutex      sync.RWMutex // Protects "currentValue" (thread safety)
+	normalLogger *log.Logger  // Standard Go logger for normal logging (not stored)
 }
 
 func NewLogger(loggerConfig LoggerConfig, logStorage store.LogStorage) *Logger {
 	return &Logger{
 		loggerConfig: loggerConfig,
 		logStorage:   logStorage,
+		normalLogger: log.New(os.Stdout, "[LOGGER] ", log.LstdFlags),
 		// Note --> rwMutex doesn't need initialization.
 	}
 }
@@ -53,7 +57,7 @@ func (l *Logger) StartLogger(ctx context.Context) error {
 	for {
 		select {
 		case <-ctx.Done():
-			fmt.Println("Logger stopeed...")
+			l.normalLogger.Println("Logger stopped...")
 			return nil
 		case <-ticker.C:
 			l.logCurrent()
@@ -69,15 +73,19 @@ func (l *Logger) logCurrent() {
 	timestamp := time.Now()
 
 	if err := l.logStorage.Store(timestamp, value); err != nil {
-		fmt.Printf("Error storing log: %v\n", err)
+		l.normalLogger.Printf("Error storing log: %v", err)
 		return
 	}
 
-	// Output to console
+	// Output generated log value to console (stored in memory)
 	fmt.Printf("%s: %s\n", timestamp.Format(l.loggerConfig.TimeFormat), value)
-
 }
 
 func generateUUID() string {
 	return uuid.New().String()
+}
+
+// GetNormalLogger returns the normal logger instance for external use
+func (l *Logger) GetNormalLogger() *log.Logger {
+	return l.normalLogger
 }

@@ -12,29 +12,29 @@ import (
 )
 
 type Application struct {
-	Logger        *logger.Logger
-	wg            sync.WaitGroup
-	LoggerHandler *api.LoggerEntryHandler
+	Logger           *logger.Logger
+	wg               sync.WaitGroup
+	LogMemoryHandler *api.LoggerEntryHandler
 	// .. Handlers
 }
 
 func NewApplication() (*Application, error) {
+	// --- Store layer ----
 	logMemoryStore := store.NewMemoryStorage()
-
 	loggerConfig := logger.LoggerConfig{
 		Interval:   5 * time.Second,
 		TimeFormat: time.RFC3339,
 	}
-
-	log := logger.NewLogger(loggerConfig, logMemoryStore)
-
-	//---  Handler layer ----
-	loggerHandler := api.NewLoggerEntryHandler(logMemoryStore)
+	logMemory := logger.NewLogger(loggerConfig, logMemoryStore)
 
 	//-----------------------
+
+	//---  Handler layer ----
+	logMemoryHandler := api.NewLoggerEntryHandler(logMemoryStore, logMemory.GetNormalLogger())
+	//-----------------------
 	app := &Application{
-		Logger:        log,
-		LoggerHandler: loggerHandler,
+		Logger:           logMemory,
+		LogMemoryHandler: logMemoryHandler,
 	}
 	return app, nil
 }
