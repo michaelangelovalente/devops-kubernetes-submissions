@@ -24,7 +24,7 @@ func RegisterRoutes(app *app.Application) http.Handler {
 
 	// r.Get("/", HelloWorldHandler)
 	r.Get("/logs", app.LoggerHandler.GetAllLogs)
-	// r.Get("/status", app.LoggerHandler.GetAllLogs)
+	r.Get("/status/{n}", app.LoggerHandler.GetLastLogsAndStatus)
 
 	return r
 }

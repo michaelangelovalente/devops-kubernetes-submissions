@@ -2,7 +2,11 @@ package utils
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
+	"strconv"
+
+	"github.com/go-chi/chi/v5"
 )
 
 type Envelope map[string]any
@@ -18,4 +22,18 @@ func WriteJSON(w http.ResponseWriter, status int, data Envelope) error {
 	w.WriteHeader(status)
 	w.Write(js)
 	return nil
+}
+
+func ReadParam(r *http.Request) (int64, error) {
+	idParam := chi.URLParam(r, "n")
+	if idParam == "" {
+		return 0, errors.New("invalid parameter")
+	}
+
+	id, err := strconv.ParseInt(idParam, 10, 64)
+	if err != nil {
+		return 0, errors.New("invalid parameter type")
+	}
+
+	return id, nil
 }

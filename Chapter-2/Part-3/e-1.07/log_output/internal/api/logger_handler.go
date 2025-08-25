@@ -26,7 +26,12 @@ func (leh *LoggerEntryHandler) GetAllLogs(w http.ResponseWriter, r *http.Request
 	)
 }
 
-func (leh *LoggerEntryHandler) GetLastLogAndStatus(w http.ResponseWriter, r *http.Request) {
+func (leh *LoggerEntryHandler) GetLastLogsAndStatus(w http.ResponseWriter, r *http.Request) {
+	// lastLogs, err := utils.ReadParam(r)
+	// if err != nil {
+	//
+	// }
+
 	logs := leh.loggerStore.GetLatest(10)
 
 	utils.WriteJSON(w, http.StatusOK,
