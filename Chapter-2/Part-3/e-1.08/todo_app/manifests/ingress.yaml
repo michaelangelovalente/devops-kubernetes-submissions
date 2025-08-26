@@ -18,4 +18,4 @@ spec:
                 name: todo-app-svc # ingress looks for this service
                 # version: "1.08" --> service handles pointing to the correct version
                 port:
-                  number: 2345
+                  number: 1234

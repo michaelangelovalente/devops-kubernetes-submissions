@@ -21,7 +21,7 @@ func NewServer() *Server {
 	port, _ := strconv.Atoi(os.Getenv("APP_PORT"))
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	if port == 0 {
-		port = 8080
+		port = 3005
 		logger.Printf("No port env variable detected. Running on default port %d\n", port)
 	}
 
