@@ -4,7 +4,7 @@ A Todo application built with Go, HTMX, and TailwindCSS for the DevOps with Kube
 
 ## 🔗 Links
 
-- **Docker Hub:** [michaelangelovalente/todo_app:ex1.08](https://hub.docker.com/r/michaelangelovalente/todo_app)
+- **Docker Hub:** [michaelangelovalente/todo_app:ex1.08](https://hub.docker.com/layers/michaelangelovalente/todo_app/ex1.08/images/sha256-1022dd55083f121214486551501fab022be917d3599d4cff3a75f08ea3b5c9eb)
 - **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/Chapter-2/Part-3/e-1.08/todo_app)
 
 ## 📋 Description
