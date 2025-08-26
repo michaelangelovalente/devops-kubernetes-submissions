@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-app-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: todo-app # This is the app as declared in the deployment.
+    version: "1.08"
+    component: backend
+  ports:
+    - name: http
+      port: 1234 # This is a port that is available to the cluster, in this case it can be ~ anything
+      targetPort: 3005 # This is the target port (app/pod)
+      protocol: TCP
