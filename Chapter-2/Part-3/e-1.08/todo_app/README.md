@@ -1,42 +1,42 @@
-# Todo App - Exercise 1.06
+# Todo App - Exercise 1.08
 
 A Todo application built with Go, HTMX, and TailwindCSS for the DevOps with Kubernetes Course.
 
 ## 🔗 Links
 
-- **Docker Hub:** [michaelangelovalente/todo_app:ex1.06](https://hub.docker.com/layers/michaelangelovalente/todo_app/ex1.06/images/sha256-29e7c9f66809b52e63c4a9aa31c10aa6982551a661c2bda4c948092073a0ab28)
-- **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/Chapter-2/Part-3/e-1.06/todo_app)
+- **Docker Hub:** [michaelangelovalente/todo_app:ex1.08](https://hub.docker.com/r/michaelangelovalente/todo_app)
+- **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/Chapter-2/Part-3/e-1.08/todo_app)
 
 ## 📋 Description
 
 - **Backend:** Go HTTP server with structured logging and graceful shutdown
 - **Frontend:** HTMX for dynamic interactions without JavaScript complexity
 - **Styling:** TailwindCSS
-- **Infrastructure:** Docker containerization and Kubernetes deployment with NodePort Service
+- **Infrastructure:** Docker containerization and Kubernetes deployment with Ingress
 
-This application demonstrates how to use a NodePort Service to enable external access to pods running in a Kubernetes cluster, fulfilling exercise 1.06 requirements.
+This application demonstrates how to use Kubernetes Ingress to enable external HTTP access to pods running in a cluster, fulfilling exercise 1.08 requirements.
 ## 🐳 Docker Commands
 
 ### Build Image
 ```bash
-docker build -t <username>/todo_app:ex1.06 .
+docker build -t <username>/todo_app:ex1.08 .
 ```
 
 ### Push to Docker Hub
 ```bash
-docker push <username>/todo_app:ex1.06
+docker push <username>/todo_app:ex1.08
 ```
 
 ### Run Locally with Docker
 ```bash
-docker run -p 8080:8080 <username>/todo_app:ex1.06
+docker run -p 3005:3005 <username>/todo_app:ex1.08
 ```
 
 ## ☸️ Kubernetes Deployment
 
 ### Create k3d Cluster
 ```bash
-k3d cluster create --port 8089:30080@agent:0 -p 8081:2345@loadbalancer --agents 3
+k3d cluster create --port 8090:30090@agent:0 -p 8082:80@loadbalancer --agents 2
 ```
 
 ### Configure kubectl Context
@@ -59,8 +59,8 @@ kubectl get deployments
 # Check pods
 kubectl get pods
 
-# Check services (including NodePort)
-kubectl get services
+# Check services and ingress
+kubectl get svc,ing
 
 # Check environment variables
 kubectl exec <pod-name> -- printenv | grep APP_PORT
@@ -68,26 +68,20 @@ kubectl exec <pod-name> -- printenv | grep APP_PORT
 
 ### Access Application
 
-**Method 1: NodePort Service (Primary for Exercise 1.06)**
+**Method 1: Ingress (Primary for Exercise 1.08)**
 ```bash
-# Access via NodePort (assuming k3d cluster with port mapping)
-# First, check the NodePort assigned:
-kubectl get service todo-app-svc
+# Access via Ingress through load balancer
+# If using k3d with port mapping 8082:80@loadbalancer
+curl localhost:8082/
 
-# If using k3d with port mapping 8089:30080@agent:0
-# and service uses NodePort 30080:
-curl localhost:8089/
-
-# Or access directly via cluster node IP:
-# Get node IP:
-kubectl get nodes -o wide
-# Access: http://<NODE_IP>:30080/
+# Or access directly in browser:
+# http://localhost:8082/
 ```
 
 **Method 2: Port Forward (Alternative)**
 ```bash
 # Port forward to access the application (development/debugging)
-kubectl port-forward service/todo-app-svc 8090:8080
+kubectl port-forward service/todo-app-svc 8090:1234
 
 # Test the application
 curl localhost:8090/
@@ -102,7 +96,7 @@ curl localhost:8090/
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>TODO App - Exercise 1.05</title>
+    <title>TODO App</title>
     <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -111,7 +105,7 @@ curl localhost:8090/
     <div class="container mx-auto max-w-md p-6">
         <header class="text-center mb-8">
             <h1 class="text-3xl font-bold text-gray-800 mb-2">TODO App</h1>
-            <p class="text-gray-600">Exercise 1.05</p>
+            <p class="text-gray-600">Exercise 1.08</p>
         </header>
         <main class="bg-white rounded-lg shadow-md p-6">
             <form class="mb-6" hx-post="/todos" hx-target="#todo-list" hx-swap="beforeend">
@@ -161,9 +155,15 @@ go test ./... -v                       # Run tests
 **Environment Variables:**
 - `APP_PORT`: Server port (default: 8080, Kubernetes deployment uses 3005)
 
-**Service Configuration:**
-- **Service Type:** NodePort (enables external access without LoadBalancer)
-- **Target Port:** 8080 (application port)
-- **Service Port:** 8080 (cluster-internal port)
-- **NodePort:** 30080 (external access port on cluster nodes)
+**Kubernetes Resources:**
+- **Deployment:** Manages application pods and replica sets
+- **Service Type:** ClusterIP (internal cluster communication)
+- **Service Port:** 1234 (cluster-internal port)
+- **Target Port:** 3005 (application port)
+- **Ingress:** Provides external HTTP access on port 80
+
+**Network Configuration:**
+- **External Access:** Available via browser through Ingress controller
+- **Internal Access:** Available to other cluster services via ClusterIP service on port 1234
+- **Application Port:** Listens on port 3005 inside the container
 
