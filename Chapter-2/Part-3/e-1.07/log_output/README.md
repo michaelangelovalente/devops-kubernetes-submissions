@@ -4,8 +4,8 @@ A Go-based HTTP server application that generates timestamps with random strings
 
 ## 🔗 Links
 
-- **Docker Hub:** [michaelangelovalente/log_output:ex1.07](https://hub.docker.com/r/michaelangelovalente/log_output)
-- **Source Code:** [GitHub Repository](https://github.com/your-username/devops-kubernetes-submissions)
+- **Docker Hub:** [michaelangelovalente/log_output:ex1.07](https://hub.docker.com/layers/michaelangelovalente/log_output-img/ex1.07/images/sha256-9a16e8050cfc228ff4bdfc0ec7a5faed689ee7420bda17a941a1287b4c155057)
+- **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/Chapter-2/Part-3/e-1.07/log_output)
 
 ## 📋 Description
 
@@ -30,7 +30,7 @@ docker push <username>/log_output:ex1.07
 
 ### Run Locally with Docker
 ```bash
-docker run -p 3000:3000 <username>/log_output:ex1.07
+docker run -p 8080:8080 <username>/log_output:ex1.07
 ```
 
 ## ☸️ Kubernetes Deployment
@@ -74,9 +74,12 @@ kubectl logs -f deployment/log-output-dep
 # Access via Ingress through load balancer
 # If using k3d with port mapping 8081:80@loadbalancer
 curl localhost:8081/
+curl localhost:8081/status
+curl localhost:8081/status?n=5
 
 # Or access directly in browser:
 # http://localhost:8081/
+# http://localhost:8081/status
 ```
 
 **Method 2: Port Forward (Alternative)**
@@ -86,15 +89,29 @@ kubectl port-forward service/log-output-svc 3003:2345
 
 # Test the application
 curl localhost:3003/
+curl localhost:3003/status
+curl localhost:3003/status?n=5
 ```
 
 #### Expected Output
 
+**GET /** - Hello World endpoint:
 ```json
 {
-  "message": "Hello World",
-  "timestamp": "2024-01-15T10:30:45Z",
-  "random_string": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  "message": "Hello World"
+}
+```
+
+**GET /status** - Status endpoint with logs:
+```json
+{
+  "status": "ready",
+  "logs": [
+    {
+      "timestamp": "2025-08-25T11:36:58.538054382Z",
+      "value": "2ae58e2b-effe-401a-b39d-f9b4be711aab"
+    }
+  ]
 }
 ```
 
@@ -103,7 +120,7 @@ curl localhost:3003/
 ### Using Makefile Commands
 ```bash
 make build       # Build the application
-make run         # Run locally on port 3000
+make run         # Run locally on port 8080
 make docker-run  # Start with Docker Compose
 make docker-down # Stop Docker containers
 make watch       # Live reload during development (uses Air)
@@ -128,20 +145,22 @@ go test ./... -v                       # Run tests
 ## ⚙️ Configuration
 
 **Environment Variables:**
-- `PORT`: Server port (default: 3000)
+- `PORT`: Server port (default: 8080)
 
 **Kubernetes Resources:**
 - **Deployment:** Manages application pods and replica sets
 - **Service Type:** ClusterIP (internal cluster communication)
 - **Service Port:** 2345 (cluster-internal port)
-- **Target Port:** 3000 (application port)
+- **Target Port:** 8080 (application port)
 - **Ingress:** Provides external HTTP access on port 80
 
 **Network Configuration:**
 - **External Access:** Available via browser through Ingress controller
 - **Internal Access:** Available to other cluster services via ClusterIP service on port 2345
-- **Application Port:** Listens on port 3000 inside the container
+- **Application Port:** Listens on port 8080 inside the container
 
 ## 📊 API Endpoints
 
-- `GET /`: Returns current status with timestamp and random string in JSON format
+- `GET /`: Returns "Hello World" message in JSON format
+- `GET /status`: Returns application status with stored log entries
+- `GET /status?n=5`: Returns application status with last 5 log entries (default: 10)

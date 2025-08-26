@@ -29,20 +29,3 @@ func RegisterRoutes(app *app.Application) http.Handler {
 	return r
 }
 
-// Basic health and ready handlers
-// func (s *Server) HealthHandler(w http.ResponseWriter, r *http.Request) {
-// 	// simple health check
-// 	utils.WriteJson(w, http.StatusOK, utils.Envelope{"status": "ready"})
-// }
-
-// func HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
-// 	resp := make(map[string]string)
-// 	resp["message"] = "Hello World"
-//
-// 	jsonResp, err := json.Marshal(resp)
-// 	if err != nil {
-// 		log.Fatalf("error handling JSON marshal. Err: %v", err)
-// 	}
-//
-// 	_, _ = w.Write(jsonResp)
-// }

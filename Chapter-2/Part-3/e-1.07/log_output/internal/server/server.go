@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"log_output/internal/app"
 	"log_output/internal/routes"
 	"net/http"
@@ -22,6 +23,7 @@ func NewServer(application *app.Application) *Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if port == 0 {
 		port = 8080
+		log.Printf("No PORT environment variable detected, starting server on default port: %d\n", port)
 	}
 
 	// Declare Server config
