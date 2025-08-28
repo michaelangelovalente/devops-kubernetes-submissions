@@ -34,7 +34,6 @@ func main() {
 
 // run contains the actual application logic
 func run(ctx context.Context) error {
-	// TODO: replace app with server
 	app, err := app.NewApplication(ctx)
 	if err != nil {
 		return fmt.Errorf("startup error: failed to create Application: %w", err)
@@ -49,8 +48,9 @@ func run(ctx context.Context) error {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if port == 0 {
 		port = 8090
-		log.Print("PORT environment variable not detected, using defalt port %d\n", port)
+		log.Printf("PORT environment variable not detected, using defalt port %d\n", port)
 	}
+
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", port),
 		Handler:      routes.RegisterRoutes(app),
