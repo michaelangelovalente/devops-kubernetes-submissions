@@ -23,6 +23,7 @@ func RegisterRoutes(app *app.Application) http.Handler {
 	}))
 
 	// r.Get("/", HelloWorldHandler)
+	r.Get("/test", app.PingpongHandler.Get)
 
 	return r
 }

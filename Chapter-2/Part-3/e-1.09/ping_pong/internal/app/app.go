@@ -11,10 +11,10 @@ import (
 )
 
 type Application struct {
-	store *store.Store
+	Store *store.Store
 	// services *Services
 	// handlers *Handlers
-	pingpongHandler *handler.PingPongHandler // temporary solution
+	PingpongHandler *handler.PingPongHandler // temporary solution
 	// Logger *logger.Logger
 	wg sync.WaitGroup
 	// Lifecycle context management
@@ -41,10 +41,10 @@ func NewApplication(ctx context.Context) (*Application, error) {
 	// -----------------------------------------------
 
 	app := &Application{
-		store: store,
+		Store: store,
 		// 	services: services,
 		// 	handlers: handlers,
-		pingpongHandler: pingpongHandler,
+		PingpongHandler: pingpongHandler,
 		// 	workers:  []Worker{},
 		baseCtx: ctx,
 	}

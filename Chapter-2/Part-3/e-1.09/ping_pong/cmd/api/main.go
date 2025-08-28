@@ -65,7 +65,7 @@ func run(ctx context.Context) error {
 	// Start Http server in a go routine
 	go func() {
 		// slog log...
-		log.Printf("Starting Application HTTP server on port %d\n", srv.Addr)
+		log.Printf("Starting Application HTTP server on port %s\n", srv.Addr)
 	}()
 
 	// Wait for either:
