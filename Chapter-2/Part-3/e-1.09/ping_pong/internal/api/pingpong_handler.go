@@ -28,20 +28,20 @@ func (ph *PingPongHandler) Get(w http.ResponseWriter, r *http.Request) {
 	)
 }
 
-// func (ph *PingPongHandler) Update(w http.ResponseWriter, r *http.Request) {
-// 	ctx := r.Context()
-// 	count, err := ph.store.PingPongStore.Update(&ctx, ph.store.PingPongStore.(*store.PingPongStore).PingPongModel)
-// 	if err != nil {
-// 		utils.WriteJSON(w, http.StatusInternalServerError, utils.Envelope{"error": err.Error()})
-// 		return
-// 	}
-// 	utils.WriteJSON(
-// 		w, http.StatusOK,
-// 		utils.Envelope{
-// 			"count": count,
-// 		},
-// 	)
-// }
+func (ph *PingPongHandler) Update(w http.ResponseWriter, r *http.Request) {
+	count, err := ph.store.PingPongStore.Update()
+
+	if err != nil {
+		utils.WriteJSON(w, http.StatusInternalServerError, utils.Envelope{"error": err.Error()})
+		return
+	}
+	utils.WriteJSON(
+		w, http.StatusOK,
+		utils.Envelope{
+			"count": count,
+		},
+	)
+}
 
 // func (ph *PingPongHandler) Reset(w http.ResponseWriter, r *http.Request) {
 // 	if r.Method != http.MethodPost {
@@ -62,23 +62,6 @@ func (ph *PingPongHandler) Get(w http.ResponseWriter, r *http.Request) {
 // 		utils.Envelope{
 // 			"message": "counter reset successfully",
 // 			"count":   0,
-// 		},
-// 	)
-// }
-//
-// func (ph *PingPongHandler) Ping(w http.ResponseWriter, r *http.Request) {
-// 	ctx := r.Context()
-// 	count, err := ph.store.PingPongStore.Update(&ctx, ph.store.PingPongStore.(*store.PingPongStore).PingPongModel)
-// 	if err != nil {
-// 		utils.WriteJSON(w, http.StatusInternalServerError, utils.Envelope{"error": err.Error()})
-// 		return
-// 	}
-//
-// 	utils.WriteJSON(
-// 		w, http.StatusOK,
-// 		utils.Envelope{
-// 			"message": "pong",
-// 			"count":   count,
 // 		},
 // 	)
 // }

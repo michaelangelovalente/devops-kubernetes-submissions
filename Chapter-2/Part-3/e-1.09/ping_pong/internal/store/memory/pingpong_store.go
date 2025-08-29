@@ -16,7 +16,7 @@ type PingPongStore struct {
 func NewPingPongStore() *PingPongStore {
 	return &PingPongStore{
 		PingPongModel: &PinpongModel{
-			Count: 10,
+			Count: -1,
 		},
 	}
 }
@@ -24,6 +24,10 @@ func NewPingPongStore() *PingPongStore {
 func (ps *PingPongStore) GetCurr() (int, error) {
 	ps.mu.Lock()
 	defer ps.mu.Unlock()
+	count := ps.PingPongModel.Count
+	if count == -1 {
+		count = 0
+	}
 	return ps.PingPongModel.Count, nil
 }
 

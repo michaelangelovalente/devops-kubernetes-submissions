@@ -22,8 +22,7 @@ func RegisterRoutes(app *app.Application) http.Handler {
 		MaxAge:           300,
 	}))
 
-	// r.Get("/", HelloWorldHandler)
-	r.Get("/test", app.PingpongHandler.Get)
+	r.Get("/pingpong", app.PingpongHandler.Update)
 
 	return r
 }

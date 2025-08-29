@@ -47,7 +47,7 @@ func run(ctx context.Context) error {
 	// HTTP Server with the application
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if port == 0 {
-		port = 8090
+		port = 8099
 		log.Printf("PORT environment variable not detected, using defalt port %d\n", port)
 	}
 
@@ -66,6 +66,7 @@ func run(ctx context.Context) error {
 	go func() {
 		// slog log...
 		log.Printf("Starting Application HTTP server on port %s\n", srv.Addr)
+		serverErrors <- srv.ListenAndServe()
 	}()
 
 	// Wait for either:
