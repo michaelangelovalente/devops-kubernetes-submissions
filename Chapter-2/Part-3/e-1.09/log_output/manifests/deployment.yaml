@@ -27,7 +27,7 @@ spec:
           env:
             # Application level env var (consumed by actual app)
             - name: PORT
-              value: "8981"
+              value: "8091"
           # Kubernetes level port declaration
           ports:
             - name: http-server

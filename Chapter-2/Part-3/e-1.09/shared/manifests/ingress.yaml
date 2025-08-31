@@ -2,26 +2,32 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: project-ingress
-  # annotations:
-  # # Traefik default in k3s. This would be the part were
-  # # custom Ingress controller can be configured
-  # kubernetes.io/ingress.class: "traefik"
-  # Note: traffic listens by default on port 80
 spec:
   rules:
     - http:
         paths:
-          - path: /lp
+          - path: / # matches app base path for endpoint
             pathType: Prefix
             backend:
               service:
                 name: log-output-svc # ingress looks for this service
                 port:
                   number: 2345
-          - path: /
+          - path: /pingpong # matches app base path for endpoint
             pathType: Prefix
             backend:
               service:
                 name: ping-pong-svc # ingress looks for this service
                 port:
                   number: 2346
+### middleware if want to change basepath
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: Middleware
+# metadata:
+#   name: strip
+#   namespace: default
+# spec:
+#   stripPrefix:
+#     prefixes:
+#       - /lp
+#       - /pp

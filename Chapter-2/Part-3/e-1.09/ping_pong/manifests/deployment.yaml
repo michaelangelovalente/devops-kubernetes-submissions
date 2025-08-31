@@ -21,13 +21,13 @@ spec:
         component: backend
     spec:
       containers:
-        - name: log-output-container
+        - name: ping-pong-container
           image: michaelangelovalente/ping_pong-img:ex1.09
           # ENV variables config
           env:
             # Application level env var (consumed by actual app)
             - name: PORT
-              value: "8982"
+              value: "8092"
           # Kubernetes level port declaration
           ports:
             - name: http-server
