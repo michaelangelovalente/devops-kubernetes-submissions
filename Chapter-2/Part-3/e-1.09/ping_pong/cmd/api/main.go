@@ -47,7 +47,7 @@ func run(ctx context.Context) error {
 	// HTTP Server with the application
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if port == 0 {
-		port = 8099
+		port = 8092
 		log.Printf("PORT environment variable not detected, using defalt port %d\n", port)
 	}
 
@@ -107,7 +107,7 @@ func shutdown(srv *http.Server, app *app.Application) error {
 
 	// Wait for both shutdowns or timeouts
 	var errs []error
-	for i := 0; i < 2; i++ {
+	for range len(errs) {
 		if err := <-shutdownErrors; err != nil {
 			errs = append(errs, err)
 		}

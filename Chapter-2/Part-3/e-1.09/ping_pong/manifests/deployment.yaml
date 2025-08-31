@@ -1,35 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: log-output-dep
+  name: ping-pong-dep
   labels:
-    app: log-output
+    app: ping-pong
     version: "1.09"
     component: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: log-output
+      app: ping-pong
       version: "1.09"
       component: backend
   template:
     metadata:
       labels:
-        app: log-output
+        app: ping-pong
         version: "1.09"
         component: backend
     spec:
       containers:
         - name: log-output-container
-          image: michaelangelovalente/log_output-img:ex1.09
+          image: michaelangelovalente/ping_pong-img:ex1.09
           # ENV variables config
           env:
             # Application level env var (consumed by actual app)
             - name: PORT
-              value: "8981"
+              value: "8982"
           # Kubernetes level port declaration
           ports:
             - name: http-server
-              containerPort: 8091
+              containerPort: 8092
               protocol: TCP

@@ -1,9 +1,11 @@
 services:
   app:
+    image: pingpong_img
+    container_name: ping_pong_ctr
     build:
       context: .
       dockerfile: Dockerfile
-      target: prod
+      target: dev
     restart: unless-stopped
     ports:
       - ${PORT}:${PORT}
