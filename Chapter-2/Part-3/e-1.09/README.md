@@ -3,8 +3,8 @@ Two Go applications with shared Kubernetes Ingress for the DevOps with Kubernete
 
 ## 🔗 Links
 
-- **Log Output Docker Hub:** [michaelangelovalente/log_output-img:ex1.09](https://hub.docker.com/layers/michaelangelovalente/log_output-img/ex1.09/images)
-- **Ping Pong Docker Hub:** [michaelangelovalente/ping_pong-img:ex1.09](https://hub.docker.com/layers/michaelangelovalente/ping_pong-img/ex1.09/images)
+- **Log Output Docker Hub:** [michaelangelovalente/log_output-img:ex1.09](https://hub.docker.com/repository/docker/michaelangelovalente/log_output-img/tags/ex1.09/sha256-65344f2974d17f6a47bc80ada080d7df3e813834380d3252484236752a568153)
+- **Ping Pong Docker Hub:** [michaelangelovalente/ping_pong-img:ex1.09](https://hub.docker.com/layers/michaelangelovalente/ping_pong-img/ex1.09/images/sha256-c0d4eec5bccff9f1efbc4e91a8fca6f2b5e5df75e4ec247f1ec0d3b48c19e5da)
 - **Source Code:** [GitHub Repository](https://github.com/michaelangelovalente/devops-kubernetes-submissions/tree/main/Chapter-2/Part-3/e-1.09)
 
 ## 📋 Description
