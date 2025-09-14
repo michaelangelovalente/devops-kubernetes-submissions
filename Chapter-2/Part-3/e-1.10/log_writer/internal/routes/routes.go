@@ -22,10 +22,7 @@ func RegisterRoutes(app *app.Application) http.Handler {
 		MaxAge:           300,
 	}))
 
-	// r.Get("/", HelloWorldHandler)
-	r.Get("/logs", app.LogMemoryHandler.GetAllLogs)
 	r.Get("/status", app.LogMemoryHandler.GetLastLogsAndStatus)
 
 	return r
 }
-

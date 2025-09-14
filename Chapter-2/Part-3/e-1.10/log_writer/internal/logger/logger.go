@@ -78,7 +78,9 @@ func (l *Logger) logCurrent() {
 	}
 
 	// Output generated log value to console (stored in memory)
-	fmt.Printf("%s: %s\n", timestamp.Format(l.loggerConfig.TimeFormat), value)
+	logLine := fmt.Sprintf("%s: %s\n", timestamp.Format(l.loggerConfig.TimeFormat), value)
+	fmt.Print(logLine)
+	l.logStorage.WriteToFile(logLine)
 }
 
 func generateUUID() string {

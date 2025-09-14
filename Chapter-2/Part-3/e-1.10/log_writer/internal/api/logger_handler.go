@@ -22,16 +22,6 @@ func NewLoggerEntryHandler(loggerMemoryStore store.LogStorage, logger *log.Logge
 	}
 }
 
-func (leh *LoggerEntryHandler) GetAllLogs(w http.ResponseWriter, r *http.Request) {
-	logs := leh.loggerStore.GetAll()
-
-	utils.WriteJSON(w, http.StatusOK,
-		utils.Envelope{
-			"logs": logs,
-		},
-	)
-}
-
 func (leh *LoggerEntryHandler) GetLastLogsAndStatus(w http.ResponseWriter, r *http.Request) {
 	nParam := r.URL.Query().Get("n")
 

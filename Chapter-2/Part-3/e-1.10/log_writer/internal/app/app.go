@@ -19,8 +19,11 @@ type Application struct {
 }
 
 func NewApplication() (*Application, error) {
+	// path := "/home/panda/Desktop/00-Study/MOOCFI-DEVOPS/KUBERNETES/devops-kubernetes-submissions/Chapter-2/Part-3/e-1.10/log_writer/test/log_output.txt"
+	path := "/test/tmp/logs.txt"
+
 	// --- Store layer ----
-	logMemoryStore := store.NewMemoryStorage()
+	logMemoryStore := store.NewFileMemoryStorage(path)
 	loggerConfig := logger.LoggerConfig{
 		Interval:   5 * time.Second,
 		TimeFormat: time.RFC3339,
