@@ -3,6 +3,8 @@ package app
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
 	"sync"
 	"time"
 
@@ -19,7 +21,12 @@ type Application struct {
 }
 
 func NewApplication() (*Application, error) {
-	path := "/test/tmp/logs.txt"
+	homePath, err := os.UserHomeDir()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get Home directory")
+	}
+
+	path := filepath.Join(homePath, "test", "tmp", "logs.txt")
 
 	// --- Store layer ----
 	logMemoryStore := store.NewFileMemoryStorage(path)
