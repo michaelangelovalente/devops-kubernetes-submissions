@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-output-dep
+  labels:
+    app: log-output
+    version: "1.09"
+    component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output
+      version: "1.09"
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: log-output
+        version: "1.09"
+        component: backend
+    spec:
+      containers:
+        - name: log-output-container
+          image: michaelangelovalente/log_output-img:ex1.09
+          # ENV variables config
+          env:
+            # Application level env var (consumed by actual app)
+            - name: PORT
+              value: "8091"
+          # Kubernetes level port declaration
+          ports:
+            - name: http-server
+              containerPort: 8091
+              protocol: TCP
