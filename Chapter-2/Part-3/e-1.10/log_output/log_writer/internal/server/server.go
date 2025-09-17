@@ -3,12 +3,13 @@ package server
 import (
 	"fmt"
 	"log"
-	"log_output/internal/app"
-	"log_output/internal/routes"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
+
+	"log_output/internal/app"
+	"log_output/internal/server/routes"
 
 	_ "github.com/joho/godotenv/autoload"
 )

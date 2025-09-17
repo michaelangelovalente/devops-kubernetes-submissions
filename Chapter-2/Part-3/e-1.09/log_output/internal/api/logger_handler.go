@@ -44,7 +44,7 @@ func (leh *LoggerEntryHandler) GetLastLogsAndStatus(w http.ResponseWriter, r *ht
 			utils.WriteJSON(w,
 				http.StatusBadRequest,
 				utils.Envelope{
-					"error": fmt.Sprintf("Invalid query parameter 'n': %v", err),
+					"error": fmt.Sprintf("invalid query parameter 'n': %v", err),
 				})
 			return
 		}

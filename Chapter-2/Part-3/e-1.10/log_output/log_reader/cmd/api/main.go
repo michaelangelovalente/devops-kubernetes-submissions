@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"log_reader/internal/app"
 	"log_reader/internal/server"
 )
 
@@ -39,7 +40,12 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 
 func main() {
 
-	server := server.NewServer()
+	app, err := app.NewApplication()
+	if err != nil {
+		panic(err)
+	}
+
+	server := server.NewServer(app)
 
 	// Create a done channel to signal when the shutdown is complete
 	done := make(chan bool, 1)
@@ -47,7 +53,7 @@ func main() {
 	// Run graceful shutdown in a separate goroutine
 	go gracefulShutdown(server, done)
 
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		panic(fmt.Sprintf("http server error: %s", err))
 	}

@@ -23,7 +23,7 @@ type Application struct {
 func NewApplication() (*Application, error) {
 	homePath, err := os.UserHomeDir()
 	if err != nil {
-		return nil, fmt.Errorf("failed to get Home directory")
+		return nil, fmt.Errorf("ERROR: failed to get Home directory")
 	}
 
 	path := filepath.Join(homePath, "test", "tmp", "logs.txt")
