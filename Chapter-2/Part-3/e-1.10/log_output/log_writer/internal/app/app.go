@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"path/filepath"
 	"sync"
 	"time"
 
@@ -21,12 +20,11 @@ type Application struct {
 }
 
 func NewApplication() (*Application, error) {
-	homePath, err := os.UserHomeDir()
-	if err != nil {
-		return nil, fmt.Errorf("ERROR: failed to get Home directory")
-	}
 
-	path := filepath.Join(homePath, "test", "tmp", "logs.txt")
+	path := os.Getenv("LOG_FILE_PATH")
+	if path == "" {
+		panic(fmt.Errorf("No file path detected"))
+	}
 
 	// --- Store layer ----
 	logMemoryStore := store.NewFileMemoryStorage(path)

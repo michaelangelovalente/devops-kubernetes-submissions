@@ -21,10 +21,10 @@ type Server struct {
 }
 
 func NewServer(application *app.Application) *Server {
-	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	port, _ := strconv.Atoi(os.Getenv("WRITER_PORT"))
 	if port == 0 {
 		port = 8091
-		log.Printf("No PORT environment variable detected, starting server on default port: %d\n", port)
+		log.Printf("No WRITER_PORT environment variable detected, starting server on default port: %d\n", port)
 	}
 
 	// Declare Server config

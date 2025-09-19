@@ -3,7 +3,6 @@ package app
 import (
 	"log"
 	"os"
-	"path/filepath"
 
 	"log_reader/internal/api"
 	"log_reader/internal/reader"
@@ -17,11 +16,7 @@ type Application struct {
 
 func NewApplication() (*Application, error) {
 	logger := log.New(os.Stdout, "[LOGGER] ", log.LstdFlags)
-	homePath, err := os.UserHomeDir()
-	if err != nil {
-		logger.Printf("ERROR: failed to get Home Directory")
-	}
-	path := filepath.Join(homePath, "test", "tmp", "logs.txt")
+	path := os.Getenv("LOG_FILE_PATH")
 	logReader := reader.NewFileLogReader(path)
 	logReaderHandler := api.NewLogReaderHandler(logReader, logger)
 	app := &Application{

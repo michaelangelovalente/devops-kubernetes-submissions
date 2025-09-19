@@ -46,14 +46,15 @@ func main() {
 	}
 
 	server := server.NewServer(app)
+	log.Printf("Server 'log_reader' started on port: %d\n", server.Port)
 
 	// Create a done channel to signal when the shutdown is complete
 	done := make(chan bool, 1)
 
 	// Run graceful shutdown in a separate goroutine
-	go gracefulShutdown(server, done)
+	go gracefulShutdown(server.HttpServer, done)
 
-	err = server.ListenAndServe()
+	err = server.HttpServer.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		panic(fmt.Sprintf("http server error: %s", err))
 	}

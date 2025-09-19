@@ -55,7 +55,7 @@ func main() {
 	}
 
 	server := server.NewServer(app)
-	log.Printf("Server 'log_output' started on port: %d\n", server.Port)
+	log.Printf("Server 'log_writer' started on port: %d\n", server.Port)
 	done := make(chan bool, 1)
 
 	// Start graceful shutdown handler
