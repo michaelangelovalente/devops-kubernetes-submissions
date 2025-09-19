@@ -11,7 +11,7 @@ services:
       - ${READER_PORT}:${READER_PORT}
     environment:
       APP_ENV: ${APP_ENV}
-      PORT: ${READER_PORT}
+      READER_PORT: ${READER_PORT}
       LOG_FILE_PATH: "/tmp/shared/logs.txt"
     volumes:
       - log_app_shared_logs:${LOG_FILE_PATH:-/tmp/shared}
@@ -27,7 +27,7 @@ services:
       - ${WRITER_PORT}:${WRITER_PORT}
     environment:
       APP_ENV: ${APP_ENV}
-      PORT: ${WRITER_PORT}
+      WRITER_PORT: ${WRITER_PORT}
       LOG_FILE_PATH: "/tmp/shared/logs.txt"
     volumes:
       - log_app_shared_logs:${LOG_FILE_PATH:-/tmp/shared}
