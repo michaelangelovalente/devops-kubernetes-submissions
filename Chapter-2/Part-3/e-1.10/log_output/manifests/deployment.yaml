@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: log-writer-reader-dep
+  name: log-output-dep
   labels:
-    app: log-writer-reader
+    app: log-output
     version: "1.10"
     component: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: log-writer-reader
+      app: log-output
       version: "1.10"
       component: backend
   template:
     metadata:
       labels:
-        app: log-writer-reader
+        app: log-output
         version: "1.10"
         component: backend
     spec:
