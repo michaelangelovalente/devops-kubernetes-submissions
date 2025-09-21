@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-writer-reader-dep
+  labels:
+    app: log-writer-reader
+    version: "1.10"
+    component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-writer-reader
+      version: "1.10"
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: log-writer-reader
+        version: "1.10"
+        component: backend
+    spec:
+      volumes:
+        - name: shared-logs-vol
+          emptyDir: {}
+      containers:
+        - name: log-writer-ctr
+          image: michaelangelovalente/log_writer:ex1.10
+          volumeMounts:
+            - name: shared-logs-vol
+              mountPath: /app/tmp/shared
+          # ENV variables config
+          env:
+            # Application level env var (consumed by actual app)
+            - name: PORT
+              value: "8091"
+            - name: LOG_FILE_PATH
+              value: "/app/tmp/shared/logs.txt"
+          # Kubernetes level port declaration
+          ports:
+            - name: http-server
+              containerPort: 8091
+              protocol: TCP
+        - name: log-reader-ctr
+          image: michaelangelovalente/log_reader:ex1.10
+          volumeMounts:
+            - name: shared-logs-vol
+              mountPath: /app/tmp/shared
+          # ENV variables config
+          env:
+            # Application level env var (consumed by actual app)
+            - name: PORT
+              value: "8092"
+            - name: LOG_FILE_PATH
+              value: "/app/tmp/shared/logs.txt"
+          # Kubernetes level port declaration
+          ports:
+            - name: http-server
+              containerPort: 8092
+              protocol: TCP

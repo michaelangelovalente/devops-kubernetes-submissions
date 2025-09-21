@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: log-writer-reader-svc
+spec:
+  type: ClusterIP # Service Type: gives Service obj internal IP accessible within cluster
+  selector:
+    app: log-writer-reader
+    version: "1.10"
+    component: backend
+  ports:
+    - name: http
+      port: 2346 # Service port -- can be anything
+      targetPort: 8092 # app port -- reader port for log-reader microserv
+      protocol: TCP

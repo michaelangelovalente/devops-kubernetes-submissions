@@ -12,9 +12,9 @@ services:
     environment:
       APP_ENV: ${APP_ENV}
       READER_PORT: ${READER_PORT}
-      LOG_FILE_PATH: "/tmp/shared/logs.txt"
+      LOG_FILE_PATH: "/app/tmp/shared/logs.txt"
     volumes:
-      - log_app_shared_logs:${LOG_FILE_PATH:-/tmp/shared}
+      - log_app_shared_logs:${LOG_FILE_PATH:-/app/tmp/shared}
   app_log_writer:
     image: log_writer
     container_name: log_writer_ctr
@@ -28,9 +28,9 @@ services:
     environment:
       APP_ENV: ${APP_ENV}
       WRITER_PORT: ${WRITER_PORT}
-      LOG_FILE_PATH: "/tmp/shared/logs.txt"
+      LOG_FILE_PATH: "/app/tmp/shared/logs.txt"
     volumes:
-      - log_app_shared_logs:${LOG_FILE_PATH:-/tmp/shared}
+      - log_app_shared_logs:${LOG_FILE_PATH:-/app/tmp/shared}
 
 volumes:
   log_app_shared_logs:

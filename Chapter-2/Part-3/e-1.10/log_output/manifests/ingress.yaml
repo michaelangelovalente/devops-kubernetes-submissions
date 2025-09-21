@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: log-writer-reader-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /logs # matches app base path for endpoint
+            pathType: Prefix
+            backend:
+              service:
+                name: log-writer-reader-svc # ingress looks for this service
+                port:
+                  number: 2346
