@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"log_output/internal/app"
-	"log_output/internal/server/routes"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -30,7 +29,6 @@ func NewServer(application *app.Application) *Server {
 	// Declare Server config
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%d", port),
-		Handler:      routes.RegisterRoutes(application),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,

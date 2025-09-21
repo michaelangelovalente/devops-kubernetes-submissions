@@ -86,8 +86,3 @@ func (l *Logger) logCurrent() {
 func generateUUID() string {
 	return uuid.New().String()
 }
-
-// GetNormalLogger returns the normal logger instance for external use
-func (l *Logger) GetNormalLogger() *log.Logger {
-	return l.normalLogger
-}

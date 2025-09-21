@@ -3,20 +3,16 @@ package app
 import (
 	"context"
 	"fmt"
+	"log_output/internal/logger"
+	"log_output/internal/store"
 	"os"
 	"sync"
 	"time"
-
-	"log_output/internal/api"
-	"log_output/internal/logger"
-	"log_output/internal/store"
 )
 
 type Application struct {
-	Logger           *logger.Logger
-	wg               sync.WaitGroup
-	LogMemoryHandler *api.LoggerEntryHandler
-	// .. Handlers
+	Logger *logger.Logger
+	wg     sync.WaitGroup
 }
 
 func NewApplication() (*Application, error) {
@@ -26,7 +22,6 @@ func NewApplication() (*Application, error) {
 		panic(fmt.Errorf("No file path detected"))
 	}
 
-	// --- Store layer ----
 	logMemoryStore := store.NewFileMemoryStorage(path)
 	loggerConfig := logger.LoggerConfig{
 		Interval:   5 * time.Second,
@@ -34,14 +29,8 @@ func NewApplication() (*Application, error) {
 	}
 	logMemory := logger.NewLogger(loggerConfig, logMemoryStore)
 
-	//-----------------------
-
-	//---  Handler layer ----
-	logMemoryHandler := api.NewLoggerEntryHandler(logMemoryStore, logMemory.GetNormalLogger())
-	//-----------------------
 	app := &Application{
-		Logger:           logMemory,
-		LogMemoryHandler: logMemoryHandler,
+		Logger: logMemory,
 	}
 	return app, nil
 }
