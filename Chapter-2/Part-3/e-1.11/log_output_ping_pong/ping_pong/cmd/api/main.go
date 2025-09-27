@@ -8,24 +8,54 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"syscall"
 	"time"
 
+	"github.com/joho/godotenv"
 	"ping_pong/internal/app"
 	"ping_pong/internal/routes"
-
-	_ "github.com/joho/godotenv/autoload"
 )
 
+// loadEnv searches for and loads a .env file in the current or parent directories.
+func loadEnv() {
+	// Start from the current directory
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Println("Error getting current directory:", err)
+		return
+	}
+
+	// Look for .env file in current and parent directories
+	for {
+		envPath := filepath.Join(dir, ".env")
+		if _, err := os.Stat(envPath); err == nil {
+			err := godotenv.Load(envPath)
+			if err != nil {
+				log.Printf("Error loading .env file from %s: %v", envPath, err)
+			} else {
+				log.Printf("Loaded .env file from %s", envPath)
+				return
+			}
+		}
+
+		// Move to parent directory
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			// Reached the root directory
+			log.Println("No .env file found in current or parent directories.")
+			return
+		}
+		dir = parent
+	}
+}
+
 func main() {
+	loadEnv()
 	ctx, cancel := signal.NotifyContext(context.Background(),
 		syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
-	// err := godotenv.Load(".env")
-	// if err != nil {
-	// 	log.Fatalf("Error loading .env file: %s", err)
-	// }
 	// run application and handle exit
 	if err := run(ctx); err != nil {
 		log.Printf("Server forced to shutdown with error: %v", err)
@@ -46,10 +76,10 @@ func run(ctx context.Context) error {
 	}
 
 	// HTTP Server with the application
-	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	port, _ := strconv.Atoi(os.Getenv("PING_PONG_PORT"))
 	if port == 0 {
-		port = 8093
-		log.Printf("PORT environment variable not detected, using defalt port %d\n", port)
+		port = 8092
+		log.Printf("PING_PONG_PORT environment variable not detected, using defalt port %d\n", port)
 	}
 
 	srv := &http.Server{

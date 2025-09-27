@@ -22,5 +22,6 @@ func (s *Server) RegisterRoutes(app *app.Application) http.Handler {
 	}))
 
 	r.Get("/logs", app.LogReaderHandler.GetAllLogs)
+	r.Get("/", app.LogReaderHandler.GetLogsPingPong)
 	return r
 }

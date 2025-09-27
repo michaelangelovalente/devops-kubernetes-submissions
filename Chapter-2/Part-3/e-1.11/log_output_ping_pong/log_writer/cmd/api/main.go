@@ -7,10 +7,47 @@ import (
 	"log_output/internal/app"
 	"log_output/internal/server"
 	"net/http"
+	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
+
+	"github.com/joho/godotenv"
 )
+
+// loadEnv searches for and loads a .env file in the current or parent directories.
+func loadEnv() {
+	// Start from the current directory
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Println("Error getting current directory:", err)
+		return
+	}
+
+	// Look for .env file in current and parent directories
+	for {
+		envPath := filepath.Join(dir, ".env")
+		if _, err := os.Stat(envPath); err == nil {
+			err := godotenv.Load(envPath)
+			if err != nil {
+				log.Printf("Error loading .env file from %s: %v", envPath, err)
+			} else {
+				log.Printf("Loaded .env file from %s", envPath)
+				return
+			}
+		}
+
+		// Move to parent directory
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			// Reached the root directory
+			log.Println("No .env file found in current or parent directories.")
+			return
+		}
+		dir = parent
+	}
+}
 
 func gracefulShutdown(apiServer *http.Server, app *app.Application, appCancel context.CancelFunc, done chan bool) {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
@@ -40,6 +77,7 @@ func gracefulShutdown(apiServer *http.Server, app *app.Application, appCancel co
 }
 
 func main() {
+	loadEnv()
 	app, err := app.NewApplication()
 	if err != nil {
 		panic(err)

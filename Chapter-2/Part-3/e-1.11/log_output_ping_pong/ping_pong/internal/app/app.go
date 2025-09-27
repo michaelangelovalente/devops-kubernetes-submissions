@@ -22,7 +22,7 @@ type Application struct {
 }
 
 func NewApplication(ctx context.Context) (*Application, error) {
-	path := os.Getenv("LOG_FILE_PATH")
+	path := os.Getenv("PING_PONG_FILE_PATH")
 	if path == "" {
 		path := "/app/tmp/shared"
 		log.Printf("No LOG_FILE_PATH env variable detected using default path: %s", path)

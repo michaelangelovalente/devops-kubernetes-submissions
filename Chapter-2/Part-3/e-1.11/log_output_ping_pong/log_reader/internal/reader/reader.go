@@ -5,13 +5,13 @@ import (
 	"log"
 	"os"
 	"strings"
-	"sync"
 	"time"
 )
 
-type LogReader interface {
+type Reader interface {
 	GetAll() ([]LogEntry, error)
-	// GetLatest(n int) ([]LogEntry, error)
+	GetLatest(n int) ([]LogEntry, error)
+	GetLastLog() (string, error)
 }
 
 type LogEntry struct {
@@ -19,37 +19,10 @@ type LogEntry struct {
 	Value     string    `json:"value"`
 }
 
-type FileLogReader struct {
-	entries []LogEntry
-	path    string
-	mu      sync.RWMutex
-}
-
-func NewFileLogReader(path string) *FileLogReader {
-	return &FileLogReader{
-		entries: make([]LogEntry, 0),
-		path:    path,
-	}
-}
-
-func (fr *FileLogReader) GetAll() ([]LogEntry, error) {
-	fr.mu.RLock()
-	defer fr.mu.RUnlock()
-
-	logContent, err := os.ReadFile(fr.path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			log.Printf("ERROR: file does not exist")
-			return nil, fmt.Errorf("ERROR: file does not exists: %w", err)
-		}
-		return []LogEntry{}, nil
-	}
-
-	return fr.parseContent(string(logContent)), nil
-}
-
-func (fr *FileLogReader) parseContent(content string) []LogEntry {
+func parseLogContent(content string) []LogEntry {
 	lines := strings.Split(content, "\n")
+
+	var newEntries []LogEntry
 
 	for _, line := range lines {
 		if line == "" {
@@ -69,12 +42,26 @@ func (fr *FileLogReader) parseContent(content string) []LogEntry {
 			continue // malformed lines
 		}
 
-		fr.entries = append(fr.entries, LogEntry{
+		newEntries = append(newEntries, LogEntry{
 			Timestamp: timestamp,
 			Value:     value,
 		})
 
 	}
 
-	return fr.entries
+	return newEntries
+}
+
+func getLogsFromFile(path string) (string, error) {
+
+	logContent, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			log.Printf("ERROR: file does not exist")
+			return "", fmt.Errorf("ERROR: file does not exists: %w", err)
+		}
+		return "", nil
+	}
+
+	return string(logContent), nil
 }

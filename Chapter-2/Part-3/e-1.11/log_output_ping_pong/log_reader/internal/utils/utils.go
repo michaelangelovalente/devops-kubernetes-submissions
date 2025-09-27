@@ -24,6 +24,13 @@ func WriteJSON(w http.ResponseWriter, status int, data Envelope) error {
 	return nil
 }
 
+func Write(w http.ResponseWriter, status int, data string) error {
+	w.Header().Set("Content-Type", "text/plain")
+	w.WriteHeader(status)
+	_, err := w.Write([]byte(data))
+	return err
+}
+
 func ReadParam(r *http.Request) (int64, error) {
 	idParam := chi.URLParam(r, "n")
 	if idParam == "" {

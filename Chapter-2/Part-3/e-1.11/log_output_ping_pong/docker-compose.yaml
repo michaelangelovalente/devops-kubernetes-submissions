@@ -42,7 +42,8 @@ services:
     environment:
       APP_ENV: ${APP_ENV}
       PING_PONG_PORT: ${PING_PONG_PORT}
-      LOG_FILE_PATH: "/app/tmp/shared/logs.txt"
+      PING_PONG_FILE_PATH: "/app/tmp/shared/pingpong.txt"
+      # LOG_FILE_PATH: "/app/tmp/shared/logs.txt"
     volumes:
       - log_app_shared_logs:${LOG_FILE_PATH:-/app/tmp/shared}
 

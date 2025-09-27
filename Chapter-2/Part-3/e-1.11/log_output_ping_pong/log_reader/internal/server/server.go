@@ -9,8 +9,6 @@ import (
 	"time"
 
 	"log_reader/internal/app"
-
-	_ "github.com/joho/godotenv/autoload"
 )
 
 type Server struct {
