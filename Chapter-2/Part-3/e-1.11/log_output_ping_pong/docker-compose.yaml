@@ -13,6 +13,7 @@ services:
       APP_ENV: ${APP_ENV}
       READER_PORT: ${READER_PORT}
       LOG_FILE_PATH: "/app/tmp/shared/logs.txt"
+      PING_PONG_FILE_PATH: "/app/tmp/shared/pingpong.txt"
     volumes:
       - log_app_shared_logs:${LOG_FILE_PATH:-/app/tmp/shared}
   app_log_writer:
@@ -29,6 +30,8 @@ services:
       APP_ENV: ${APP_ENV}
       WRITER_PORT: ${WRITER_PORT}
       LOG_FILE_PATH: "/app/tmp/shared/logs.txt"
+    volumes:
+      - log_app_shared_logs:${LOG_FILE_PATH:-/app/tmp/shared}
   ping_pong:
     image: ping_pong
     container_name: ping_pong_ctr
@@ -36,7 +39,7 @@ services:
       context: ./ping_pong
       dockerfile: Dockerfile
       target: dev
-    restart: unless-stopeed
+    restart: unless-stopped
     ports:
       - ${PING_PONG_PORT}:${PING_PONG_PORT}
     environment:

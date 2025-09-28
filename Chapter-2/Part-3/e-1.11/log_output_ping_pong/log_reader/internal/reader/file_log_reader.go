@@ -41,7 +41,7 @@ func (fr *FileLogReader) GetLastLog() (string, error) {
 
 	logLines := strings.Split(logData, "\n")
 
-	return logLines[0], nil
+	return logLines[len(logLines)-2], nil
 }
 
 func (fr *FileLogReader) getLogsFromFile() ([]LogEntry, error) {
