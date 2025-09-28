@@ -1,60 +1,81 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: log-output-dep
+  name: ping-pong-dep
   labels:
-    app: log-output
-    version: "1.10"
+    app: ping-pong
+    version: "1.11"
     component: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: log-output
-      version: "1.10"
+      app: ping-pong
+      version: "1.11"
       component: backend
   template:
     metadata:
       labels:
-        app: log-output
-        version: "1.10"
+        app: ping-pong
+        version: "1.11"
         component: backend
     spec:
       volumes:
         - name: shared-logs-vol
           emptyDir: {}
+
       containers:
         - name: log-writer-ctr
-          image: michaelangelovalente/log_writer:ex1.10
+          image: michaelangelovalente/log_writer:ex1.11
           volumeMounts:
             - name: shared-logs-vol
               mountPath: /app/tmp/shared
           # ENV variables config
           env:
             # Application level env var (consumed by actual app)
-            - name: PORT
+            - name: WRITER_PORT
               value: "8091"
             - name: LOG_FILE_PATH
               value: "/app/tmp/shared/logs.txt"
           # Kubernetes level port declaration
           ports:
-            - name: http-server
+            - name: http-writer
               containerPort: 8091
               protocol: TCP
+
         - name: log-reader-ctr
-          image: michaelangelovalente/log_reader:ex1.10
+          image: michaelangelovalente/log_reader:ex1.11
           volumeMounts:
             - name: shared-logs-vol
               mountPath: /app/tmp/shared
           # ENV variables config
           env:
             # Application level env var (consumed by actual app)
-            - name: PORT
+            - name: READER_PORT
               value: "8092"
             - name: LOG_FILE_PATH
               value: "/app/tmp/shared/logs.txt"
+            - name: PING_PONG_FILE_PATH
+              value: "/app/tmp/shared/pingpong.txt"
+          ports:
+            - name: http-reader
+              containerPort: 8092
+              protocol: TCP
+
+        - name: ping-pong-ctr
+          image: michaelangelovalente/ping_pong:ex1.11
+          volumeMounts:
+            - name: shared-logs-vol
+              mountPath: /app/tmp/shared
+          # ENV variables config
+          env:
+            # Application level env var (consumed by actual app)
+            - name: PING_PONG_PORT
+              value: "8093"
+            - name: PING_PONG_FILE_PATH
+              value: "/app/tmp/shared/pingpong.txt"
           # Kubernetes level port declaration
           ports:
-            - name: http-server
-              containerPort: 8092
+            - name: http-pingpong
+              containerPort: 8093
               protocol: TCP
