@@ -65,5 +65,4 @@ func (lr *LogReaderHandler) GetLogsPingPong(w http.ResponseWriter, r *http.Reque
 	}
 
 	utils.Write(w, http.StatusOK, logData+"\n"+pingpongData)
-
 }

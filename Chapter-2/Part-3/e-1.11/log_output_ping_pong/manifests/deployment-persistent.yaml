@@ -22,7 +22,8 @@ spec:
     spec:
       volumes:
         - name: shared-logs-vol
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: ping-pong-claim
 
       containers:
         - name: log-writer-ctr
