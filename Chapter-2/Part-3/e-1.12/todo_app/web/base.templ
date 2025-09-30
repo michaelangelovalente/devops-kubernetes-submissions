@@ -10,16 +10,24 @@ templ Base() {
     <title>TODO App</title>
     <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url('/static/example.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen">
-    <div class="container mx-auto max-w-md p-6">
+<body class="min-h-screen">
+    <div class="container mx-auto max-w-md p-6 bg-white bg-opacity-75 rounded-lg shadow-md mt-8">
         <header class="text-center mb-8">
             <h1 class="text-3xl font-bold text-gray-800 mb-2">TODO App</h1>
             <p class="text-gray-600">Devops with Kubernetes (Helsinki.fi)</p>
         </header>
 
-        <main class="bg-white rounded-lg shadow-md p-6">
+        <main>
             <form class="mb-6" hx-post="/todos" hx-target="#todo-list" hx-swap="beforeend">
                 <div class="flex gap-2">
                     <input type="text" name="task" placeholder="Add a new todo..."

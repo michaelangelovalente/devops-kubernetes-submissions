@@ -28,16 +28,16 @@ func NewServer() *Server {
 	NewServer := &Server{
 		Port:   port,
 		Logger: logger,
-		Server: &http.Server{
-		Addr:         fmt.Sprintf(":%d", port),
+	}
+
+	server := &http.Server{
+		Addr:         fmt.Sprintf(":%d", NewServer.Port),
 		Handler:      NewServer.RegisterRoutes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
-		},
 	}
 
-	server :=
 	NewServer.Server = server
 
 	return NewServer
