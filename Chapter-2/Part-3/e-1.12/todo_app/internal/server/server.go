@@ -13,8 +13,9 @@ import (
 
 type Server struct {
 	*http.Server
-	Port   int
-	Logger *log.Logger
+	Port     int
+	Logger   *log.Logger
+	ImageDir string
 }
 
 func NewServer() *Server {
@@ -25,9 +26,15 @@ func NewServer() *Server {
 		logger.Printf("No port env variable detected. Running on default port %d\n", port)
 	}
 
+	imageDir := os.Getenv("IMAGE_DIR")
+	if imageDir == "" {
+		imageDir = "tmp/images"
+	}
+
 	NewServer := &Server{
-		Port:   port,
-		Logger: logger,
+		Port:     port,
+		Logger:   logger,
+		ImageDir: imageDir,
 	}
 
 	server := &http.Server{

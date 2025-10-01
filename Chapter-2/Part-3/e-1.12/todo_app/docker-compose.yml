@@ -13,6 +13,6 @@ services:
     environment:
       APP_ENV: ${APP_ENV:-local}
       APP_PORT: ${APP_PORT:-3005}
-      IMAGE_DIR: ${IMAGE_DIR:-./tmp/images}
+      IMAGE_DIR: ${IMAGE_DIR:-/test/tmp/images}
     volumes:
-      - ./${IMAGE_DIR:-./tmp/images}:${IMAGE_DIR:-./tmp/images}
+      - ./${IMAGE_DIR:-/test/tmp/images}:${IMAGE_DIR:-/test/tmp/images}

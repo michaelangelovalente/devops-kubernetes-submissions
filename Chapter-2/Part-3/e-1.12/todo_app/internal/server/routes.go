@@ -22,9 +22,12 @@ func (s *Server) RegisterRoutes() http.Handler {
 		MaxAge:           300,
 	}))
 
-	fileServer := http.FileServer(http.FS(web.Files))
-	// r.Handle("/views/*", fileServer)
-	r.Handle("/static/*", fileServer)
+	r.Handle("/static/*", http.FileServer(http.FS(web.Files)))
+
+	r.Get("/image", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, s.ImageDir+"/background.jpg")
+	})
+
 	r.Get("/", templ.Handler(web.Base()).ServeHTTP)
 	return r
 }

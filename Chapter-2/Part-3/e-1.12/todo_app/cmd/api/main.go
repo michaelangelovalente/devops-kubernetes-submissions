@@ -59,7 +59,9 @@ func main() {
 	server := server.NewServer()
 	imageDir := os.Getenv("IMAGE_DIR")
 	if imageDir == "" {
-		imageDir = "./tmp/images"
+		// imageDir = "./tmp/images"
+		imageDir = "/tmp/images"
+		log.Printf("No IMAGE_DIR found using default image dir %s", imageDir)
 	}
 
 	// Start the background image rotation task.
