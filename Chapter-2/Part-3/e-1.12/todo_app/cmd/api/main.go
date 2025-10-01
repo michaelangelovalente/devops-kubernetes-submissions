@@ -5,12 +5,16 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"todo_app/internal/picsum"
 	"todo_app/internal/server"
 )
+
+// const imageDir = "tmp/images"
 
 func gracefulShutdown(apiServer *http.Server, done chan bool) {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
@@ -32,14 +36,40 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 	done <- true
 }
 
+func imageRotationTask(logger *log.Logger, imageDir string) {
+	// Fetch the image on startup.
+	if err := picsum.FetchAndSaveImage(imageDir); err != nil {
+		logger.Printf("Error fetching initial image: %v", err)
+	}
+
+	// Use a ticker to fetch the image every 1 minute.
+	ticker := time.NewTicker(1 * time.Minute)
+	defer ticker.Stop()
+
+	for range ticker.C {
+		if err := picsum.FetchAndSaveImage(imageDir); err != nil {
+			logger.Printf("Error fetching image: %v", err)
+		} else {
+			logger.Println("Background image updated successfully.")
+		}
+	}
+}
+
 func main() {
 	server := server.NewServer()
+	imageDir := os.Getenv("IMAGE_DIR")
+	if imageDir == "" {
+		imageDir = "./tmp/images"
+	}
+
+	// Start the background image rotation task.
+	go imageRotationTask(server.Logger, imageDir)
 
 	done := make(chan bool, 1)
 
 	go gracefulShutdown(server.Server, done)
 
-	server.Logger.Printf("Server (ex 1.08) started on port %d\n", server.Port)
+	server.Logger.Printf("Server (ex 1.12) started on port %d\n", server.Port)
 	err := server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		panic(fmt.Sprintf("http server error: %s", err))

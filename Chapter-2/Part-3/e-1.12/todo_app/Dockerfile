@@ -13,6 +13,8 @@ FROM alpine:3.20.1 AS dev
 WORKDIR /app
 COPY --from=build /app/main /app/main
 
+ENV IMAGE_DIR=${IMAGE_DIR:-./tmp/images}
+
 EXPOSE ${APP_PORT:-3005}
 CMD ["./main"]
 
