@@ -28,7 +28,7 @@ func NewServer() *Server {
 
 	imageDir := os.Getenv("IMAGE_DIR")
 	if imageDir == "" {
-		imageDir = "tmp/images"
+		log.Fatal("IMAGE_DIR environment variable is not set")
 	}
 
 	NewServer := &Server{

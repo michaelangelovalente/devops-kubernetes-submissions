@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"os/signal"
 	"syscall"
 	"time"
@@ -57,15 +56,13 @@ func imageRotationTask(logger *log.Logger, imageDir string) {
 
 func main() {
 	server := server.NewServer()
-	imageDir := os.Getenv("IMAGE_DIR")
-	if imageDir == "" {
-		// imageDir = "./tmp/images"
-		imageDir = "/tmp/images"
-		log.Printf("No IMAGE_DIR found using default image dir %s", imageDir)
-	}
+	// imageDir := os.Getenv("IMAGE_DIR")
+	// if imageDir == "" {
+	// 	log.Fatal("IMAGE_DIR environment variable is not set")
+	// }
 
 	// Start the background image rotation task.
-	go imageRotationTask(server.Logger, imageDir)
+	go imageRotationTask(server.Logger, server.ImageDir)
 
 	done := make(chan bool, 1)
 

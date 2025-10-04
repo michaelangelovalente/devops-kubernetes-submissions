@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"log_output/internal/logger"
-	"log_output/internal/store"
 	"os"
 	"sync"
 	"time"
+
+	"log_output/internal/logger"
+	"log_output/internal/store"
 )
 
 type Application struct {
@@ -17,10 +18,9 @@ type Application struct {
 }
 
 func NewApplication() (*Application, error) {
-
 	path := os.Getenv("LOG_FILE_PATH")
 	if path == "" {
-		path := "/app/tmp/shared"
+		path = "/app/tmp/shared"
 		log.Printf("No LOG_FILE_PATH env variable detected using default path: %s", path)
 	}
 
