@@ -1,0 +1,21 @@
+services:
+  app:
+    image: todo_app
+    container_name: todo_app_ctr
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    restart: unless-stopped
+    ports:
+      - ${APP_PORT:-3005}:${APP_PORT:-3005}
+    # docker compose injects local var APP_ENV
+    environment:
+      APP_ENV: ${APP_ENV:-local}
+      APP_PORT: ${APP_PORT:-3005}
+      IMAGE_DIR: ${IMAGE_DIR:-/app/tmp/images}
+    volumes:
+      - todo_app_images:${IMAGE_DIR:-/app/tmp/images}:${IMAGE_DIR:-/app/tmp/images}
+
+volumes:
+  todo_app_images:

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-app-dep
+  labels:
+    app: todo-app
+    version: "1.12"
+    component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-app
+      version: "1.12"
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: todo-app
+        version: "1.12"
+        component: backend
+    spec:
+      volumes:
+        - name: todo-app-vol
+          persistentVolumeClaim:
+            claimName: todo-app-claim
+
+      containers:
+        - name: todo-app-ctr
+          image: michaelangelovalente/todo_app:ex1.12
+          volumeMounts:
+            - name: todo-app-vol
+              mountPath: /app/tmp/shared/images
+          # ENV variables config
+          env:
+            # Application level env var (consumed by actual app)
+            - name: PORT
+              value: "3005"
+            - name: IMAGE_DIR
+              value: "/app/tmp/shared/images"
+          # Kubernetes level port declaration
+          ports:
+            - name: http-todo-app
+              containerPort: 3005
+              protocol: TCP
