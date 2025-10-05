@@ -1,6 +1,9 @@
 package todo
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 type Todo struct {
 	ID        int
@@ -24,6 +27,7 @@ var Todos = inMemoryTodos
 func GetTodos() []Todo {
 	mu.RLock()
 	defer mu.RUnlock()
+	fmt.Println("GET: ", inMemoryTodos)
 	return inMemoryTodos
 }
 
@@ -35,6 +39,7 @@ func AddTodo(task string) Todo {
 		Task: task,
 	}
 	inMemoryTodos = append(inMemoryTodos, newTodo)
+	fmt.Println("ADD: ", inMemoryTodos)
 	nextID++
 	return newTodo
 }

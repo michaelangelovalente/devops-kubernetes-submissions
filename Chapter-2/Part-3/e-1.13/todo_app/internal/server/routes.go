@@ -2,6 +2,7 @@ package server
 
 import (
 	"net/http"
+
 	"todo_app/internal/todo"
 	"todo_app/web"
 	"todo_app/web/views"
@@ -36,6 +37,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 		templ.Handler(views.Todo(newTodo)).ServeHTTP(w, r)
 	})
 
-	r.Handle("/", templ.Handler(web.Base(todo.GetTodos())))
+	r.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		templ.Handler(web.Base(todo.GetTodos())).ServeHTTP(w, r)
+	}))
+
 	return r
 }
