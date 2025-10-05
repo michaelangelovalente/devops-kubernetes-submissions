@@ -1,6 +1,11 @@
 package web
 
-templ Base() {
+import (
+"todo_app/internal/todo"
+"todo_app/web/views"
+)
+
+templ Base(todoList []todo.Todo) {
 <!DOCTYPE html>
 <html lang="en" class="h-screen">
 
@@ -41,9 +46,7 @@ templ Base() {
                 </div>
             </form>
 
-            <div id="todo-list" class="space-y-2">
-                <!-- Todo items will be inserted here -->
-            </div>
+            @views.TodoList(todoList)
         </main>
     </div>
 </body>

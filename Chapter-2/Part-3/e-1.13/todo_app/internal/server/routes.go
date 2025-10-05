@@ -2,7 +2,9 @@ package server
 
 import (
 	"net/http"
+	"todo_app/internal/todo"
 	"todo_app/web"
+	"todo_app/web/views"
 
 	"github.com/a-h/templ"
 	"github.com/go-chi/chi/v5"
@@ -28,6 +30,12 @@ func (s *Server) RegisterRoutes() http.Handler {
 		http.ServeFile(w, r, s.ImageDir+"/background.jpg")
 	})
 
-	r.Get("/", templ.Handler(web.Base()).ServeHTTP)
+	r.Post("/todos", func(w http.ResponseWriter, r *http.Request) {
+		task := r.FormValue("task")
+		newTodo := todo.AddTodo(task)
+		templ.Handler(views.Todo(newTodo)).ServeHTTP(w, r)
+	})
+
+	r.Handle("/", templ.Handler(web.Base(todo.GetTodos())))
 	return r
 }
