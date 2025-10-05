@@ -6,7 +6,7 @@ spec:
   type: ClusterIP # Service Type: gives Service obj internal IP accessible within cluster
   selector:
     app: todo-app
-    version: "1.12"
+    version: "1.13"
     component: backend
   ports:
     - name: http

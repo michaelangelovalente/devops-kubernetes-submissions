@@ -4,20 +4,20 @@ metadata:
   name: todo-app-dep
   labels:
     app: todo-app
-    version: "1.12"
+    version: "1.13"
     component: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: todo-app
-      version: "1.12"
+      version: "1.13"
       component: backend
   template:
     metadata:
       labels:
         app: todo-app
-        version: "1.12"
+        version: "1.13"
         component: backend
     spec:
       volumes:
@@ -27,7 +27,7 @@ spec:
 
       containers:
         - name: todo-app-ctr
-          image: michaelangelovalente/todo_app:ex1.12
+          image: michaelangelovalente/todo_app:ex1.13
           volumeMounts:
             - name: todo-app-vol
               mountPath: /app/tmp/shared/images

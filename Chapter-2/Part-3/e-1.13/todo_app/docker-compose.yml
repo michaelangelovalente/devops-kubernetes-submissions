@@ -1,6 +1,6 @@
 services:
   app:
-    image: todo_app
+    image: michaelangelovalente/todo_app:ex1.13
     container_name: todo_app_ctr
     build:
       context: .
