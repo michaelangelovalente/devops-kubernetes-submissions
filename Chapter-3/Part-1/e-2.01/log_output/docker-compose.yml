@@ -1,0 +1,14 @@
+services:
+  app:
+    image: log_output_img
+    container_name: log_output_ctr
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    restart: unless-stopped
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      APP_ENV: ${APP_ENV}
+      PORT: ${PORT}
