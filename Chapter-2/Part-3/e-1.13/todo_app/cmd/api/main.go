@@ -56,10 +56,6 @@ func imageRotationTask(logger *log.Logger, imageDir string) {
 
 func main() {
 	server := server.NewServer()
-	// imageDir := os.Getenv("IMAGE_DIR")
-	// if imageDir == "" {
-	// 	log.Fatal("IMAGE_DIR environment variable is not set")
-	// }
 
 	// Start the background image rotation task.
 	go imageRotationTask(server.Logger, server.ImageDir)

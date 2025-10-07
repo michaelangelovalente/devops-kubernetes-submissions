@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ping-pong-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: / # matches app base path for endpoint
+            pathType: Prefix
+            backend:
+              service:
+                name: log-reader-svc # ingress looks for this service and routes to log-reader-svc Service
+                port:
+                  number: 2346
+          - path: /pingpong
+            pathType: Prefix
+            backend:
+              service:
+                name: ping-pong-svc
+                port:
+                  number: 2346

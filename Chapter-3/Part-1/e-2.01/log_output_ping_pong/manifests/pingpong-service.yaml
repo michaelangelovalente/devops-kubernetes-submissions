@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ping-pong-svc
+spec:
+  type: ClusterIP # Service Type: gives Service obj internal IP accessible within cluster
+  selector:
+    app: ping-pong
+    version: "1.11"
+    component: backend
+  ports:
+    - name: http
+      port: 2346 # Service port -- can be anything
+      targetPort: http-pingpong # app port -- reader port for log-reader microserv
+      protocol: TCP
