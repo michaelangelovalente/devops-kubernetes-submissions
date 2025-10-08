@@ -1,0 +1,24 @@
+services:
+  log-output:
+    image: log_output_img
+    container_name: log_output_ctr
+    build:
+      context: ./log_output
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${LOG_OUTPUT_PORT}:${LOG_OUTPUT_PORT}"
+    environment:
+      - PORT=${LOG_OUTPUT_PORT}
+
+  ping-pong:
+    image: ping_pong_img
+    container_name: ping_pong_ctr
+    build:
+      context: ./ping_pong
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${PING_PONG_PORT}:${PING_PONG_PORT}"
+    environment:
+      - PORT=${PING_PONG_PORT}

@@ -1,4 +1,4 @@
-FROM golang:1.24.5-alpine AS build
+FROM golang:1.25.1-alpine AS build
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ RUN go build -o main cmd/api/main.go
 FROM alpine:3.20.1 AS dev
 WORKDIR /app
 COPY --from=build /app/main /app/main
-EXPOSE ${PORT}
+EXPOSE ${LOG_OUTPUT_PORT}
 CMD ["./main"]
 
 
