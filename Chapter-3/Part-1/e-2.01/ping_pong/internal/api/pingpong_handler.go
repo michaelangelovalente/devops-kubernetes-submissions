@@ -1,9 +1,9 @@
 package handler
 
 import (
+	"common/utils"
 	"net/http"
 	"ping_pong/internal/store"
-	"ping_pong/internal/utils"
 )
 
 type PingPongHandler struct {

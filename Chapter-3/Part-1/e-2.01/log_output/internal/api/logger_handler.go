@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"common/utils"
 	"log_output/internal/store"
-	"log_output/internal/utils"
 )
 
 type LoggerEntryHandler struct {
