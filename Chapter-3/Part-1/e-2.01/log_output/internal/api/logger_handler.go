@@ -7,19 +7,39 @@ import (
 	"strconv"
 
 	"common/utils"
+	client "log_output/internal/client/pingpong"
 	"log_output/internal/store"
 )
 
 type LoggerEntryHandler struct {
-	loggerStore store.LogStorage // Use interface, not concrete type
-	logger      *log.Logger
+	loggerStore    store.LogStorage // Use interface, not concrete type
+	logger         *log.Logger
+	pingpongClient client.Client
 }
 
-func NewLoggerEntryHandler(loggerMemoryStore store.LogStorage, logger *log.Logger) *LoggerEntryHandler {
+func NewLoggerEntryHandler(loggerMemoryStore store.LogStorage, logger *log.Logger, pingpongClient client.Client) *LoggerEntryHandler {
 	return &LoggerEntryHandler{
-		loggerStore: loggerMemoryStore,
-		logger:      logger,
+		loggerStore:    loggerMemoryStore,
+		logger:         logger,
+		pingpongClient: pingpongClient,
 	}
+}
+
+func (leh *LoggerEntryHandler) GetLastLogAndCount(w http.ResponseWriter, r *http.Request) {
+	logs := leh.loggerStore.GetLatest(1)
+	pingpongCount, err := leh.pingpongClient.GetCount()
+	if err != nil {
+		utils.WriteJSON(w, http.StatusInternalServerError,
+			utils.Envelope{
+				"error": fmt.Sprintf("internal server error: %v", err),
+			},
+		)
+		return
+	}
+
+	//TODO!: fix log format
+	utils.Write(w, http.StatusOK, fmt.Sprintf("%s\nPing / Pongs: %d\n", logs[0].Timestamp.String()+logs[0].Value, pingpongCount))
+
 }
 
 func (leh *LoggerEntryHandler) GetAllLogs(w http.ResponseWriter, r *http.Request) {

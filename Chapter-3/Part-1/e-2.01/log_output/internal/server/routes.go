@@ -12,6 +12,7 @@ func RegisterRoutes(app *app.Application) http.Handler {
 	r := common_server.NewRouter()
 	r.Get("/logs", app.LogMemoryHandler.GetAllLogs)
 	r.Get("/status", app.LogMemoryHandler.GetLastLogsAndStatus)
+	r.Get("/", app.LogMemoryHandler.GetLastLogAndCount)
 
 	return r
 }

@@ -4,6 +4,7 @@ import (
 	"common/boot"
 	common_server "common/server"
 	"log"
+
 	"log_output/internal/app"
 	"log_output/internal/server"
 )
@@ -18,5 +19,4 @@ func main() {
 	srv.Handler = server.RegisterRoutes(application)
 
 	boot.Run(application, srv)
-
 }

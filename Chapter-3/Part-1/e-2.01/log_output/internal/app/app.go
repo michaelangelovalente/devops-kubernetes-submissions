@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"log_output/internal/api"
+	client "log_output/internal/client/pingpong"
 	"log_output/internal/logger"
 	"log_output/internal/store"
 )
@@ -15,22 +16,25 @@ type Application struct {
 	Logger           *logger.Logger
 	wg               sync.WaitGroup
 	LogMemoryHandler *api.LoggerEntryHandler
+	// PingPongClient   *client.Client
 }
 
 func NewApplication() (*Application, error) {
-	// --- Store layer ----
 	logMemoryStore := store.NewMemoryStorage()
 	loggerConfig := logger.LoggerConfig{
 		Interval:   5 * time.Second,
 		TimeFormat: time.RFC3339,
 	}
+
+	// pingPongURL := os.Getenv("PING_PONG_SVC_URL")
+	pingPongURL := "http://localhost:8092"
+	// if pingPongURL == "" {
+	// 	return nil, fmt.Errorf("PING_PONG_SVC_URL environment variable not set")
+	// }
+	pingpongClient := client.NewClient(pingPongURL, 5*time.Second)
+
 	logMemory := logger.NewLogger(loggerConfig, logMemoryStore)
-
-	//-----------------------
-
-	//---  Handler layer ----
-	logMemoryHandler := api.NewLoggerEntryHandler(logMemoryStore, logMemory.GetNormalLogger())
-	//-----------------------
+	logMemoryHandler := api.NewLoggerEntryHandler(logMemoryStore, logMemory.GetNormalLogger(), pingpongClient)
 	app := &Application{
 		Logger:           logMemory,
 		LogMemoryHandler: logMemoryHandler,
