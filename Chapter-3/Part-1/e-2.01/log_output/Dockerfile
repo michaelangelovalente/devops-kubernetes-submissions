@@ -1,23 +1,32 @@
-FROM golang:1.25.1-alpine AS build
+FROM golang:1.25.1-alpine AS builder
 
 WORKDIR /app
 
+# Copy the workspace file first to enable workspace mode
 COPY go.work ./
 
-
+# Copy module files to leverage Docker's layer caching.
 COPY common/go.mod ./common/
+COPY log_output/go.mod ./log_output/
+COPY ping_pong/go.mod ./ping_pong/
 
-COPY go.mod go.sum ./
+# Download all dependencies for the workspace
 RUN go mod download
 
+
+# Copy all source code.
+# This is done after deps are downloaded to improve caching.
 COPY . .
 
-RUN go build -o main cmd/api/main.go
+# Build the specific application for this service.
+RUN go build -o /app/main ./log_output/cmd/api/main.go
 
-FROM alpine:3.20.1 AS dev
+
+FROM alpine:3.20.1 AS final
 WORKDIR /app
-COPY --from=build /app/main /app/main
-EXPOSE ${LOG_OUTPUT_PORT}
+COPY --from=builder /app/main /app/main
+
+ENV PORT=8081
+EXPOSE 8081
+
 CMD ["./main"]
-
-

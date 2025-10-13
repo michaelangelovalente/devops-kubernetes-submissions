@@ -29,6 +29,7 @@ func NewClient(baseUrl string, timeout time.Duration) Client {
 // func (c *httpClient) GetCount(ctx context.Context) (int, error) {
 func (c *httpClient) GetCount() (int, error) {
 	url := fmt.Sprintf("%s/pingpong", c.baseUrl)
+	fmt.Println("REQUEST URL: ", url)
 	// req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {

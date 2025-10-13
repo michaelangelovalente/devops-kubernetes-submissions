@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"os"
 	"sync"
 	"time"
 
@@ -26,11 +27,10 @@ func NewApplication() (*Application, error) {
 		TimeFormat: time.RFC3339,
 	}
 
-	// pingPongURL := os.Getenv("PING_PONG_SVC_URL")
-	pingPongURL := "http://localhost:8092"
-	// if pingPongURL == "" {
-	// 	return nil, fmt.Errorf("PING_PONG_SVC_URL environment variable not set")
-	// }
+	pingPongURL := os.Getenv("PING_PONG_SVC_URL")
+	if pingPongURL == "" {
+		return nil, fmt.Errorf("PING_PONG_SVC_URL environment variable not set")
+	}
 	pingpongClient := client.NewClient(pingPongURL, 5*time.Second)
 
 	logMemory := logger.NewLogger(loggerConfig, logMemoryStore)

@@ -7,9 +7,10 @@ services:
       dockerfile: ./log_output/Dockerfile
     restart: unless-stopped
     ports:
-      - "${LOG_OUTPUT_PORT}:${LOG_OUTPUT_PORT}"
+      - "${LOG_OUTPUT_PORT}:8081"
     environment:
-      - PORT=${LOG_OUTPUT_PORT}
+      - PORT=8081
+      - PING_PONG_SVC_URL=http://ping-pong:8082 # Use service name for discovery
 
   ping-pong:
     image: ping_pong_img
@@ -19,7 +20,6 @@ services:
       dockerfile: ./ping_pong/Dockerfile
     restart: unless-stopped
     ports:
-      - "${PING_PONG_PORT}:${PING_PONG_PORT}"
+      - "${PING_PONG_PORT}:8082"
     environment:
-      - PORT=${PING_PONG_PORT}
-
+      - PORT=8082

@@ -38,7 +38,6 @@ func (leh *LoggerEntryHandler) GetLastLogAndCount(w http.ResponseWriter, r *http
 		return
 	}
 
-	//TODO!: fix log format
 	utils.Write(w, http.StatusOK, fmt.Sprintf("%s: %s\nPing / Pongs: %d\n", logs[0].Timestamp.Format(time.RFC3339), logs[0].Value, pingpongCount))
 
 }
