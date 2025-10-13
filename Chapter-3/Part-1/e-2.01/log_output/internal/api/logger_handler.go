@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"common/utils"
 	client "log_output/internal/client/pingpong"
@@ -38,7 +39,7 @@ func (leh *LoggerEntryHandler) GetLastLogAndCount(w http.ResponseWriter, r *http
 	}
 
 	//TODO!: fix log format
-	utils.Write(w, http.StatusOK, fmt.Sprintf("%s\nPing / Pongs: %d\n", logs[0].Timestamp.String()+logs[0].Value, pingpongCount))
+	utils.Write(w, http.StatusOK, fmt.Sprintf("%s: %s\nPing / Pongs: %d\n", logs[0].Timestamp.Format(time.RFC3339), logs[0].Value, pingpongCount))
 
 }
 
