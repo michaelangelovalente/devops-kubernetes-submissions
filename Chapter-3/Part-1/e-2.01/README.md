@@ -267,27 +267,23 @@ Internet → k3d LoadBalancer:8081 → Shared Ingress:80
                                       └─ /pingpong → ping-pong-svc:1234 → ping_pong:8092
 ```
 
-## 🏗️ Project Structure
 
+
+kubectl test through busybox using dns service with Service name
+```bash
+kubectl exec -it my-busybox -- wget -qO - http://pingpong-svc:2366/pingpong | jq .
 ```
-e-1.09/
-├── README.md                    # This file
-├── log_output/                  # Log output application
-│   ├── cmd/api/main.go         # Application entry point
-│   ├── internal/               # Application logic
-│   ├── manifests/              # Kubernetes deployment & service
-│   ├── Dockerfile              # Container image
-│   ├── Makefile               # Build commands
-│   └── go.mod                 # Go module
-├── ping_pong/                  # Ping pong application
-│   ├── cmd/api/main.go        # Application entry point
-│   ├── internal/              # Application logic
-│   ├── manifests/             # Kubernetes deployment & service
-│   ├── Dockerfile             # Container image
-│   ├── Makefile              # Build commands
-│   └── go.mod                # Go module
-└── shared/                    # Shared Kubernetes resources
-    └── manifests/             # Shared Ingress configuration
-        └── ingress.yaml       # Path-based routing rules
+
+
+kubectl test through busybox using ClusterIP
+```bash
+kubectl exec -it my-busybox -- wget -qO - http://10.43.122.68:2366/pingpong | jq .
 ```
+
+kubectl test through busybox Direct pod IP access
+```bash
+ kubectl exec -it my-busybox -- wget -qO - http://10.42.1.11:8096/pingpong | jq .
+ kubectl exec -it my-busybox -- wget -qO - http://10.42.1.11:8095/
+```
+
 

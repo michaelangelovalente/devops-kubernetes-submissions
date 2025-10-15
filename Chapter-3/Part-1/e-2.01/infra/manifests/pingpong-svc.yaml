@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pingpong-svc
+spec:
+  type: ClusterIP # Service Type: gives Service obj internal IP accessible within cluster
+  selector:
+    app: log-output
+    version: "2.01"
+    component: backend
+  ports:
+    - name: http
+      port: 2366 # Service port -- can be anything
+      targetPort: http-pingpong # target port access for other pods in cluster
+      protocol: TCP
