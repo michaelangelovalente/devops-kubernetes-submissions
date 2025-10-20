@@ -1,0 +1,11 @@
+package views
+
+import "todo_app/internal/client"
+
+templ TodoList(todoList []client.Todo){
+<div id="todo-list" class="space-y-2">
+    for _, t := range todoList {
+    @Todo(t)
+    }
+</div>
+}
