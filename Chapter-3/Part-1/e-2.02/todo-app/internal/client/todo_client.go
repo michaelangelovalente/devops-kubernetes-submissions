@@ -12,7 +12,7 @@ type TodoClient struct {
 	HTTPClient
 }
 
-func NewClient(baseURL string, timeout time.Duration) *TodoClient {
+func NewTodoClient(baseURL string, timeout time.Duration) *TodoClient {
 	return &TodoClient{
 		HTTPClient: HTTPClient{
 			client: &http.Client{
@@ -34,7 +34,6 @@ type Todo struct {
 }
 
 func (tc *TodoClient) GetTodos() ([]Todo, error) {
-
 	reqURL := fmt.Sprintf("%s/todos", tc.GetClientBaseURL())
 	resp, err := tc.client.Get(reqURL)
 	if err != nil {
@@ -53,9 +52,11 @@ func (tc *TodoClient) GetTodos() ([]Todo, error) {
 		return nil, fmt.Errorf("could not decode response: %v", err)
 	}
 
-	return todoResp.Data, nil
+	fmt.Println(todoResp)
 
+	return todoResp.Data, nil
 }
+
 func (tc *TodoClient) AddTodo(todoEntry string) (Todo, error) {
 	reqURL := fmt.Sprintf("%s/%s", tc.GetClientBaseURL(), "todo")
 	todoReq := struct {
@@ -86,5 +87,5 @@ func (tc *TodoClient) AddTodo(todoEntry string) (Todo, error) {
 		return Todo{}, fmt.Errorf("could not decode response: %v", err)
 	}
 
-	return todoResp.Data[len(todoReq.Data)-1], nil
+	return todoResp.Data[len(todoResp.Data)-1], nil
 }

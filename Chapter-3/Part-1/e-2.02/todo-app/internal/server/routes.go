@@ -21,9 +21,7 @@ func (s *AppServer) RegisterRoutes() http.Handler {
 
 	r.Post("/todos", func(w http.ResponseWriter, r *http.Request) {
 		task := r.FormValue("task")
-		// newTodo := todo.AddTodo(task)
 		newTodo, _ := s.TodoClient.AddTodo(task)
-
 		templ.Handler(views.Todo(newTodo)).ServeHTTP(w, r)
 	})
 

@@ -6,13 +6,12 @@ import (
 
 	"common/boot"
 	common_server "common/server"
-	"todo_app/internal/picsum"
 	"todo_app/internal/server"
 )
 
-func imageRotationTask(logger *log.Logger, imageDir string) {
+func imageRotationTask(logger *log.Logger, server *server.AppServer) {
 	// Fetch the image on startup.
-	if err := picsum.FetchAndSaveImage(imageDir); err != nil {
+	if err := server.PicsumClient.FetchAndSaveImage(); err != nil {
 		logger.Printf("Error fetching initial image: %v", err)
 	}
 
@@ -21,7 +20,7 @@ func imageRotationTask(logger *log.Logger, imageDir string) {
 	defer ticker.Stop()
 
 	for range ticker.C {
-		if err := picsum.FetchAndSaveImage(imageDir); err != nil {
+		if err := server.PicsumClient.FetchAndSaveImage(); err != nil {
 			logger.Printf("Error fetching image: %v", err)
 		} else {
 			logger.Println("Background image updated successfully.")
@@ -36,6 +35,6 @@ func main() {
 	boot.Run(server, httpServer)
 
 	// Start the background image rotation task.
-	go imageRotationTask(server.Logger, server.ImageDir)
+	go imageRotationTask(server.Logger, server)
 
 }

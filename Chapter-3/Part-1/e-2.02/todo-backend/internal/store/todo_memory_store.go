@@ -13,9 +13,9 @@ type Todo struct {
 
 var (
 	inMemoryTodos = []Todo{
-		{ID: 1, Task: "Implement in-memory todo list", Completed: true},
-		{ID: 2, Task: "Add HTMX for dynamic UI", Completed: false},
-		{ID: 3, Task: "Set up Docker for containerization", Completed: false},
+		// {ID: 1, Task: "Implement in-memory todo list", Completed: true},
+		// {ID: 2, Task: "Add HTMX for dynamic UI", Completed: false},
+		// {ID: 3, Task: "Set up Docker for containerization", Completed: false},
 	}
 	nextID = len(inMemoryTodos) + 1
 	mu     sync.RWMutex
