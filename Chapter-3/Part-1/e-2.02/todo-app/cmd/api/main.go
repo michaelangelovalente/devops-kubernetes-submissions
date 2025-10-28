@@ -1,10 +1,10 @@
 package main
 
 import (
+	"common/boot"
 	"log"
 	"time"
 
-	"common/boot"
 	common_server "common/server"
 	"todo_app/internal/server"
 )
@@ -32,9 +32,9 @@ func main() {
 	server := server.NewServer()
 	httpServer := common_server.New(3010)
 	httpServer.Handler = server.RegisterRoutes()
-	boot.Run(server, httpServer)
 
 	// Start the background image rotation task.
 	go imageRotationTask(server.Logger, server)
 
+	boot.Run(server, httpServer)
 }

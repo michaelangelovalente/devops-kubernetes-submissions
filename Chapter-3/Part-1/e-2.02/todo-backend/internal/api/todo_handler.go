@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
 	"todo-backend/internal/store"
 )
 
@@ -49,14 +50,4 @@ func (th *TodoHandler) AddTodo(w http.ResponseWriter, r *http.Request) {
 			"data": todos,
 		},
 	)
-
 }
-
-// func (th *TodoHandler) GetTodos(w http.ResponseWriter, r *http.Request) {
-// 	todos := store.GetTodos()
-// 	utils.WriteJSON(w, http.StatusOK,
-// 		utils.Envelope{
-// 			"data": todos,
-// 		},
-// 	)
-// }

@@ -29,7 +29,7 @@ func NewServer() *AppServer {
 	if picsumUrl == "" {
 		log.Fatalf("PICSUM_URL env variable is not set")
 	}
-	picumsClient := client.NewPicsumClient(picsumUrl, imageDir, time.Second*5)
+	picumsClient := client.NewPicsumClient(picsumUrl, imageDir, time.Second*15)
 
 	todoUrl := os.Getenv("TODO_SVC_URL")
 	if todoUrl == "" {
