@@ -65,6 +65,9 @@ func (tc *TodoClient) AddTodo(todoEntry string) (Todo, error) {
 		Data: todoEntry,
 	}
 
+	fmt.Println("Sending request to: ", reqURL)
+	fmt.Println("BODY: ", todoReq)
+
 	jsonReq, err := json.Marshal(todoReq)
 	if err != nil {
 		return Todo{}, fmt.Errorf("could not marshall request: %v", err)

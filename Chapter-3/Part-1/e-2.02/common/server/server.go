@@ -40,5 +40,10 @@ func NewRouter() *chi.Mux {
 		AllowCredentials: true,
 		MaxAge:           300,
 	}))
+
+	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK"))
+	})
 	return r
 }

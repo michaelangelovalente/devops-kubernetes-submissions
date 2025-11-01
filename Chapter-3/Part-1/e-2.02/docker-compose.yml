@@ -5,11 +5,41 @@ services:
     build:
       context: .
       dockerfile: ./todo-backend/Dockerfile
+      target: runtime
+      args:
+        - GO_VERSION=1.25.3
     restart: unless-stopped
     ports:
       - "8082:8081"
     environment:
       - PORT=8081
+    env_file:
+      - ./todo-backend/.env
+    networks:
+      - todo_network
+    healthcheck:
+      test: [ "CMD", "/app/main", "-health-check" ]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.1"
+          memory: 128M
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
 
   todo-app:
     image: todo_app_fe_img
@@ -17,18 +47,29 @@ services:
     build:
       context: .
       dockerfile: ./todo-app/Dockerfile
+      target: runtime
     restart: unless-stopped
     ports:
       - "3006:3005"
     depends_on:
       todo-backend:
-        condition: service_started
+        # condition: service_started
+        condition: service_healthy
     environment:
       - PORT=3005
-      - PICSUM_URL=https://picsum.photos/1200
       - TODO_SVC_URL=http://todo-backend:8081
-      - IMAGE_DIR=./tmp/images/
+      - PICSUM_URL=https://picsum.photos/1200
+      - IMAGE_DIR=/app/tmp/images/
+    env_file:
+      - ./todo-app/.env
     volumes:
-      - todo_app_vol:/app/tmp/images:/app/tmp/images
+      - todo_app_vol:/app/tmp/images
+    networks:
+      - todo_network
+
+networks:
+  todo_network:
+    driver: bridge
+
 volumes:
   todo_app_vol:
