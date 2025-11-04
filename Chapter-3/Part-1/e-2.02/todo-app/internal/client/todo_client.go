@@ -52,8 +52,6 @@ func (tc *TodoClient) GetTodos() ([]Todo, error) {
 		return nil, fmt.Errorf("could not decode response: %v", err)
 	}
 
-	fmt.Println(todoResp)
-
 	return todoResp.Data, nil
 }
 
