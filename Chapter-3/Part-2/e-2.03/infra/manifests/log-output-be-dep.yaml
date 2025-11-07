@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: exercises
   name: log-output-dep
   labels:
     app: log-output-be
@@ -15,6 +16,7 @@ spec:
       component: backend
   template:
     metadata:
+      namespace: exercises
       labels:
         app: log-output-be
         version: "2.03"

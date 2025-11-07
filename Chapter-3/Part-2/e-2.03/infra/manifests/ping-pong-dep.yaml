@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: exercises
   name: ping-pong-dep
   labels:
     app: ping-pong-be
@@ -15,6 +16,7 @@ spec:
       component: backend
   template:
     metadata:
+      namespace: exercises
       labels:
         app: ping-pong-be
         version: "2.03"
