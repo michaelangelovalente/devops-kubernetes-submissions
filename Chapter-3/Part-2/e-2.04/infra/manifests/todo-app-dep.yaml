@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: project
+  name: todo-app-dep
+  labels:
+    app: todo-app
+    version: "2.04"
+    component: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-app
+      version: "2.04"
+      component: frontend
+  template:
+    metadata:
+      namespace: project
+      labels:
+        app: todo-app
+        version: "2.04"
+        component: frontend
+    spec:
+      securityContext:
+        fsGroup: 1001
+      volumes:
+        - name: image-storage
+          persistentVolumeClaim:
+            claimName: todo-app-claim
+      containers:
+        - name: todo-app-ctr
+          image: michaelangelovalente/todo_app_fe_img:ex2.04
+          # Kubernetes level port declaration
+          ports:
+            - name: http-todo-app
+              containerPort: 3066
+              protocol: TCP
+          env:
+            # Application level env var (consumed by actual app)
+            - name: PORT
+              value: "3066"
+            - name: TODO_SVC_URL
+              value: "http://todo-be-svc:2386"
+            - name: PICSUM_URL
+              value: "https://picsum.photos/1200"
+            - name: IMAGE_DIR
+              value: /app/tmp/images/
+          # Volume Mount - Mounts PVC-backed volume
+          volumeMounts:
+            - name: image-storage
+              mountPath: /app/tmp/images #Path in container
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
