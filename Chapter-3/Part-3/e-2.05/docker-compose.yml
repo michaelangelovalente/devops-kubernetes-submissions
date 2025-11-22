@@ -11,6 +11,10 @@ services:
     environment:
       - PORT=${LOG_OUTPUT_PORT}
       - PING_PONG_SVC_URL=http://ping-pong:${PING_PONG_PORT} # Use service name for discovery
+      - MESSAGE=HELLO from a docker compose environment variable!
+      - FILE_INFO_TXT_PATH=/app/config/info-docker.txt
+    volumes:
+      - ./instructions-local.txt:/app/config/info-docker.txt
     ports:
       - "${LOG_OUTPUT_PORT}:${LOG_OUTPUT_PORT}"
 
