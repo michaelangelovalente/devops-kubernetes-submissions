@@ -1,7 +1,6 @@
 package store
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -27,7 +26,6 @@ var Todos = inMemoryTodos
 func GetTodos() []Todo {
 	mu.RLock()
 	defer mu.RUnlock()
-	fmt.Println("GET: ", inMemoryTodos)
 	return inMemoryTodos
 }
 

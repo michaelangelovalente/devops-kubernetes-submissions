@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: exercises
+  name: log-output-pp-svc
+spec:
+  type: ClusterIP # Service Type: gives Service obj internal IP accessible within cluster
+  selector:
+    app: log-output-be
+    version: "2.03"
+    component: backend
+  ports:
+    - name: http
+      # Service port -- can be anything
+      port: 2355
+      targetPort: http-logoutput # app port -- reader port --> using named port as target.  target port access for other pods in cluster
+      protocol: TCP

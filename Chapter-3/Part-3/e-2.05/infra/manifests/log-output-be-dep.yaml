@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: exercises
+  name: log-output-dep
+  labels:
+    app: log-output-be
+    version: "2.03"
+    component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output-be
+      version: "2.03"
+      component: backend
+  template:
+    metadata:
+      namespace: exercises
+      labels:
+        app: log-output-be
+        version: "2.03"
+        component: backend
+    spec:
+      containers:
+        - name: log-output-be-ctr
+          image: michaelangelovalente/log_output-img:ex2.03
+          env:
+            - name: PORT
+              value: "8095"
+            - name: PING_PONG_SVC_URL
+              value: http://ping-pong-svc:2366
+          # Kubernetes level port declaration
+          ports:
+            - name: http-logoutput
+              containerPort: 8095
+              protocol: TCP
