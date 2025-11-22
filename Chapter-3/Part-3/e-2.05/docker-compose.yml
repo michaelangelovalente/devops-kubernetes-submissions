@@ -8,11 +8,11 @@ services:
     restart: unless-stopped
     env_file:
       - ./log_output/.env
-    ports:
-      - "${LOG_OUTPUT_PORT}:8096"
     environment:
-      # - PORT=8081
-      - PING_PONG_SVC_URL=http://ping-pong:8097 # Use service name for discovery
+      - PORT=${LOG_OUTPUT_PORT}
+      - PING_PONG_SVC_URL=http://ping-pong:${PING_PONG_PORT} # Use service name for discovery
+    ports:
+      - "${LOG_OUTPUT_PORT}:${LOG_OUTPUT_PORT}"
 
   ping-pong:
     image: ping_pong_img
@@ -23,7 +23,7 @@ services:
     env_file:
       - ./ping_pong/.env
     restart: unless-stopped
+    environment:
+      - PORT=${PING_PONG_PORT}
     ports:
-      - "${PING_PONG_PORT}:8097"
-    # environment:
-    # - PORT=8082
+      - "${PING_PONG_PORT}:${PING_PONG_PORT}"
