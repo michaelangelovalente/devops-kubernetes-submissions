@@ -35,7 +35,7 @@ spec:
             - name: PING_PONG_SVC_URL
               value: http://ping-pong-svc:2366
             - name: FILE_INFO_TXT_PATH
-              value: /etc/app/config/instructions.txt
+              value: /etc/app/config/information.txt
             - name: MESSAGE # used by go os.GetEnv()
               valueFrom:
                 configMapKeyRef:
