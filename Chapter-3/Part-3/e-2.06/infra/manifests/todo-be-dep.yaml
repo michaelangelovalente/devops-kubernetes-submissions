@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: project
+  name: todo-be-dep
+  labels:
+    app: todo-be
+    version: "2.06"
+    component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-be
+      version: "2.06"
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: todo-be
+        version: "2.06"
+        component: backend
+    spec:
+      containers:
+        - name: todo-be-ctr
+          image: michaelangelovalente/todo_be_img:ex2.06
+          # Kubernetes level port declaration
+          ports:
+            - name: http-todo-be
+              containerPort: 8091
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: todo-be-cfgm
+
+          # env:
+          #   # Application level env var (consumed by actual app)
+          #   - name: PORT
+          #     value: "8091"

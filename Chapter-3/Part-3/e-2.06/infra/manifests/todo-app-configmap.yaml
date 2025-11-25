@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: project
+  name: todo-app-fe-cfgm
+data:
+  PORT: "3066" # replace w/ 3066
+  TODO_SVC_URL: "http://todo-be-svc:2386"
+  PICSUM_URL: "https://picsum.photos/1200"

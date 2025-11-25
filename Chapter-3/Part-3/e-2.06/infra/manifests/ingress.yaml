@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: project
+  name: todo-app-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: / # matches app base path for endpoint
+            pathType: Prefix
+            backend:
+              service:
+                name: todo-app-svc # ingress looks for this service and routes to svc Service
+                port:
+                  number: 2006
