@@ -39,16 +39,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: todo-app-fe-cfgm
-          env:
-            #   # Application level env var (consumed by actual app)
-            #   - name: PORT
-            #     value: "3066"
-            #   - name: TODO_SVC_URL
-            #     value: "http://todo-be-svc:2386"
-            #   - name: PICSUM_URL
-            #     value: "https://picsum.photos/1200"
-            - name: IMAGE_DIR
-              value: /app/tmp/images/
           # Volume Mount - Mounts PVC-backed volume
           volumeMounts:
             - name: image-storage

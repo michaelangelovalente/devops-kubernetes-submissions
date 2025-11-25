@@ -32,8 +32,3 @@ spec:
           envFrom:
             - configMapRef:
                 name: todo-be-cfgm
-
-          # env:
-          #   # Application level env var (consumed by actual app)
-          #   - name: PORT
-          #     value: "8091"
