@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pingpong-psql-db-stset
+  labels:
+    app: pingpong-psql-db
+    version: "2.07"
+    component: database
+spec:
+  serviceName: pingpong-psql-db-svc
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pingpong-psql-db
+      version: "2.07"
+      component: database
+  template:
+    metadata:
+      labels:
+        app: pingpong-psql-db
+        version: "2.07"
+        component: database
+    spec:
+      containers:
+        - name: pingpong-psql-db-ctr
+          image: postgres:18.1
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "pingpong"
+          ports:
+            - name: http-psql-db
+              containerPort: 5432
+          volumeMounts:
+            - name: pingpong-psql-db-storage
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: pingpong-psql-db-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 100Mi

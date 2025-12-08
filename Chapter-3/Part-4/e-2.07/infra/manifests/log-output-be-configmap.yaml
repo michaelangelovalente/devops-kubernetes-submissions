@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: log-output-be-cfgm
+  namespace: exercises
+data:
+  MESSAGE_ENV_CFG: "(2.05)hello world!"
+  information.txt: |
+    (2.05) This text is from a file

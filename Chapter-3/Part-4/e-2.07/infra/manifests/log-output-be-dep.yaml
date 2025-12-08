@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: exercises
+  name: log-output-dep
+  labels:
+    app: log-output-be
+    version: "2.05"
+    component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output-be
+      version: "2.05"
+      component: backend
+  template:
+    metadata:
+      namespace: exercises
+      labels:
+        app: log-output-be
+        version: "2.05"
+        component: backend
+    spec:
+      volumes:
+        - name: log-output-be-cfgm-vol
+          configMap:
+            name: log-output-be-cfgm
+      containers:
+        - name: log-output-be-ctr
+          image: michaelangelovalente/log_output-img:ex2.05
+          env:
+            - name: PORT
+              value: "8095"
+            - name: PING_PONG_SVC_URL
+              value: http://ping-pong-svc:2366
+            - name: FILE_INFO_TXT_PATH
+              value: /etc/app/config/information.txt
+            - name: MESSAGE # used by go os.GetEnv()
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-be-cfgm
+                  key: MESSAGE_ENV_CFG
+          volumeMounts:
+            - name: log-output-be-cfgm-vol
+              mountPath: /etc/app/config
+
+          # Kubernetes level port declaration
+          ports:
+            - name: http-logoutput
+              containerPort: 8095
+              protocol: TCP

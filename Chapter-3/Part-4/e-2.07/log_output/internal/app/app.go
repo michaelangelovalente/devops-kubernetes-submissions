@@ -27,8 +27,8 @@ func NewApplication() (*Application, error) {
 		TimeFormat: time.RFC3339,
 	}
 
-	fileInfoPath := os.Getenv("FILE_INFO_TXT_PATH")
-	if fileInfoPath == "" {
+	fileInfoDir := os.Getenv("FILE_INFO_TXT_PATH")
+	if fileInfoDir == "" {
 		log.Fatal("FILE_INFO_TXT_PATH was not set.")
 	}
 	pingPongURL := os.Getenv("PING_PONG_SVC_URL")
@@ -38,7 +38,7 @@ func NewApplication() (*Application, error) {
 	pingpongClient := client.NewClient(pingPongURL, 5*time.Second)
 
 	logMemory := logger.NewLogger(loggerConfig, logMemoryStore)
-	logMemoryHandler := api.NewLoggerEntryHandler(logMemoryStore, logMemory.GetNormalLogger(), pingpongClient, fileInfoPath)
+	logMemoryHandler := api.NewLoggerEntryHandler(logMemoryStore, logMemory.GetNormalLogger(), pingpongClient, fileInfoDir)
 	app := &Application{
 		Logger:           logMemory,
 		LogMemoryHandler: logMemoryHandler,

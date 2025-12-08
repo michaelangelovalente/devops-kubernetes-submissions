@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: exercises
+  name: ping-pong-dep
+  labels:
+    app: ping-pong-be
+    version: "2.05"
+    component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ping-pong-be
+      version: "2.05"
+      component: backend
+  template:
+    metadata:
+      namespace: exercises
+      labels:
+        app: ping-pong-be
+        version: "2.05"
+        component: backend
+    spec:
+      containers:
+        - name: ping-pong-be-ctr
+          image: michaelangelovalente/ping_pong_img:ex2.05
+          env:
+            - name: PORT
+              value: "8096"
+          ports:
+            - name: http-ping-pong
+              containerPort: 8096
+              protocol: TCP

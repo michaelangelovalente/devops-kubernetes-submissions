@@ -41,9 +41,7 @@ func (leh *LoggerEntryHandler) GetLatestData(w http.ResponseWriter, r *http.Requ
 	fileContent, err := os.ReadFile(leh.fileInfoPath)
 	var fileContentTxt string
 	if err != nil {
-		// It's better to log this error on the server side as well
-		leh.logger.Printf("Error reading file at %s: %v", leh.fileInfoPath, err)
-		fileContentTxt = fmt.Sprintf("file content: ERROR - check logs for details (path: %s)", leh.fileInfoPath)
+		fileContentTxt = fmt.Sprintf("file content: ERROR - Could not read file from path %s: %v", leh.fileInfoPath, err)
 	} else {
 		fileContentTxt = fmt.Sprintf("file content: %s", strings.TrimSpace(string(fileContent)))
 	}
