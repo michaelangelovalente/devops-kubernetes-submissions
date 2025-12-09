@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	handler "ping_pong/internal/api"
+	"ping_pong/internal/migrations"
 	"ping_pong/internal/store"
 )
 
@@ -17,6 +18,11 @@ type Application struct {
 
 func NewApplication() (*Application, error) {
 	postgresDB, err := db.Open()
+	if err != nil {
+		panic(err)
+	}
+
+	err = db.MigrateFS(postgresDB, migrations.FS, ".")
 	if err != nil {
 		panic(err)
 	}

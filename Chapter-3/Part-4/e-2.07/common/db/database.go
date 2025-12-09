@@ -6,7 +6,7 @@ import (
 	"io/fs"
 	"os"
 
-	_ "github.com/jackc/pgx/v5"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/pressly/goose/v3"
 )
 
@@ -34,6 +34,7 @@ func Open() (*DBService, error) {
 	}
 
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&search_path=%s", username, password, host, port, dbName, dbSchema)
+	fmt.Println(connStr)
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
 		return nil, fmt.Errorf("could not connect to db: %v", err)

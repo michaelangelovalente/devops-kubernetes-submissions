@@ -42,26 +42,3 @@ func (ph *PingPongHandler) Update(w http.ResponseWriter, r *http.Request) {
 		},
 	)
 }
-
-// func (ph *PingPongHandler) Reset(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method != http.MethodPost {
-// 		utils.WriteJSON(w, http.StatusMethodNotAllowed, utils.Envelope{"error": "method not allowed"})
-// 		return
-// 	}
-//
-// 	ctx := r.Context()
-// 	pingPongStore := ph.store.PingPongStore.(*store.PingPongStore)
-//
-// 	if err := ph.store.PingPongStore.Reset(&ctx, pingPongStore.PingPongModel); err != nil {
-// 		utils.WriteJSON(w, http.StatusInternalServerError, utils.Envelope{"error": err.Error()})
-// 		return
-// 	}
-//
-// 	utils.WriteJSON(
-// 		w, http.StatusOK,
-// 		utils.Envelope{
-// 			"message": "counter reset successfully",
-// 			"count":   0,
-// 		},
-// 	)
-// }

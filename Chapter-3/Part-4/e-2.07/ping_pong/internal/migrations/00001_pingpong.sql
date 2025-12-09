@@ -4,9 +4,9 @@ CREATE TABLE IF NOT EXISTS pingpong_counter (
     id BIGSERIAL PRIMARY KEY,
     count INTEGER NOT NULL
 );
---- +goose StatementEnd
+-- +goose StatementEnd
 
---- +goose Down
---- +goose StatementBegin
+-- +goose Down
+-- +goose StatementBegin
 DROP TABLE pingpong;
---- +goose StatementEnd
+-- +goose StatementEnd
