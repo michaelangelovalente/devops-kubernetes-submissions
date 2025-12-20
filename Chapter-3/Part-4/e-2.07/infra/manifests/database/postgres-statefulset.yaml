@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: pingpong-psql-db-ctr
-          image: postgres:18.1
+          image: postgres:18-alpine
           env:
             - name: POSTGRES_PASSWORD
               value: "pingpong"

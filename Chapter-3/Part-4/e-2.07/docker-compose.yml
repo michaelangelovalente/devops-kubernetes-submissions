@@ -1,4 +1,21 @@
 services:
+  postgres-local-db:
+    image: postgres:18-alpine
+    container_name: postgres_local_db_ctr
+    environment:
+      - POSTGRES_PASSWORD=pingpong
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgres_local_db_data:/var/lib/postgresql/pingpong_data
+    ports:
+      - "5455:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
   log-output:
     image: log_output_img
     container_name: log_output_ctr
@@ -29,5 +46,12 @@ services:
     restart: unless-stopped
     environment:
       - PORT=${PING_PONG_PORT}
+      - DB_HOST=postgres-local-db
+      - DB_PORT=5432
     ports:
       - "${PING_PONG_PORT}:${PING_PONG_PORT}"
+    depends_on:
+      postgres-local-db:
+        condition: service_healthy
+volumes:
+  postgres_local_db_data:
