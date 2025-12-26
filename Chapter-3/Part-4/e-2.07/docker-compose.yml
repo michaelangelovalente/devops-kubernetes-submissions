@@ -3,13 +3,13 @@ services:
     image: postgres:18-alpine
     container_name: postgres_local_db_ctr
     environment:
-      - POSTGRES_PASSWORD=pingpong
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
     volumes:
-      - postgres_local_db_data:/var/lib/postgresql/pingpong_data
+      - postgres_local_db_data:/var/lib/postgresql/data
     ports:
-      - "5455:5432"
+      - "${DB_PORT}:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
