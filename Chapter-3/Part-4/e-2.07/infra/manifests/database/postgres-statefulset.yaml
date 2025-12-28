@@ -26,14 +26,20 @@ spec:
         - name: pingpong-psql-db-ctr
           image: postgres:18-alpine
           env:
+            - name: POSTGRES_DB
+              value: "postgres"
+            - name: POSTGRES_USER
+              value: "postgres"
             - name: POSTGRES_PASSWORD
               value: "pingpong"
+            - name: PGDATA
+              value: "/var/lib/postgresql/data/pgdata"
           ports:
             - name: http-psql-db
               containerPort: 5432
           volumeMounts:
             - name: pingpong-psql-db-storage
-              mountPath: /data
+              mountPath: /var/lib/postgresql
   volumeClaimTemplates:
     - metadata:
         name: pingpong-psql-db-storage

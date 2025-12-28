@@ -4,6 +4,6 @@ metadata:
   name: log-output-be-cfgm
   namespace: exercises
 data:
-  MESSAGE_ENV_CFG: "(2.05)hello world!"
+  MESSAGE_ENV_CFG: "(2.07)hello world!"
   information.txt: |
-    (2.05) This text is from a file
+    (2.07) This text is from a file
