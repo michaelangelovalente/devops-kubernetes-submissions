@@ -11,12 +11,12 @@ import (
 )
 
 var (
-	username   = os.Getenv("DB_USERNAME")
-	password   = os.Getenv("DB_PASSWORD")
-	host       = os.Getenv("DB_HOST")
-	port       = os.Getenv("DB_PORT")
-	dbName     = os.Getenv("DB_NAME")
-	dbSchema   = os.Getenv("DB_SCHEMA")
+	username = os.Getenv("DB_USERNAME")
+	password = os.Getenv("DB_PASSWORD")
+	host     = os.Getenv("DB_HOST")
+	port     = os.Getenv("DB_PORT")
+	dbName   = os.Getenv("DB_NAME")
+	// dbSchema   = os.Getenv("DB_SCHEMA")
 	dbInstance *DBService
 )
 
@@ -33,7 +33,7 @@ func Open() (*DBService, error) {
 		return dbInstance, nil
 	}
 
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&search_path=%s", username, password, host, port, dbName, dbSchema)
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, port, dbName)
 	fmt.Println(connStr)
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
@@ -53,7 +53,13 @@ func Open() (*DBService, error) {
 }
 
 func MigrateFS(dbService *DBService, migrationFS fs.FS, dir string) error {
+	_, err := dbService.DB.Exec("CREATE SCHEMA IF NOT EXISTS pingpong_sc")
+	if err != nil {
+		return fmt.Errorf("could not create schema: %w", err)
+	}
+
 	goose.SetBaseFS(migrationFS)
+	goose.SetTableName("pingpong_sc.goose_db_version")
 	defer func() {
 		goose.SetBaseFS(nil)
 	}()

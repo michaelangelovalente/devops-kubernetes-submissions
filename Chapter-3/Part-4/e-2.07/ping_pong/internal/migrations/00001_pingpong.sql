@@ -1,4 +1,4 @@
--- +goose UP
+-- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS pingpong_counter (
     id BIGSERIAL PRIMARY KEY,
@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS pingpong_counter (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE pingpong;
+DROP TABLE pingpong_counter;
 -- +goose StatementEnd
